@@ -32,7 +32,7 @@ Report the following
 
 ```python
 # insert your answer here
-
+x=2
 ```
 
 ### 2)
