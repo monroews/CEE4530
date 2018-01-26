@@ -2,7 +2,7 @@
 Get help at
 [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links)
 ## Headers
-Headers like the one above are made by using the # symbol. Each additional # moves down one level in the outline of your document.
+Headers like the one above are made by using the # symbol. Each additional # moves down one level in the outline of your document. 
 # Heading 1
 ## Heading 2
 ### Heading 3
