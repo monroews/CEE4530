@@ -2,10 +2,10 @@
 ## Headers
 Headers like the one above are made by using the # symbol. The more ## symbols that you use the smaller the font.
 # Biggest
-##Big
-###small
-####smaller
-######smallest
+## Big
+### small
+#### smaller
+###### smallest
 
 Then to add text just type in the markdown file.
 ## Emphasis
