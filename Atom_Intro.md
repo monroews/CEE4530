@@ -2,12 +2,12 @@
 Get help at
 [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links)
 ## Headers
-Headers like the one above are made by using the # symbol. The more ## symbols that you use the smaller the font.
-# Biggest
-## Big
-### small
-#### smaller
-###### smallest
+Headers like the one above are made by using the # symbol. Each additional # moves down one level in the outline of your document.
+# Heading 1
+## Heading 2
+### Heading 3
+#### Heading 4
+###### Heading 5 (do you really have this many levels in your outline?)
 
 Then to add text just type in the markdown file.
 ## Emphasis
@@ -78,7 +78,7 @@ You can find available functions by typing in the shortcut for the available lib
 pipe
 ```
 
-Multiple two variables with units. 
+Multiple two variables with units.
 
 ```Python
 V=1.85*u.mm/u.s
