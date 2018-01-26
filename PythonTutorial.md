@@ -32,7 +32,6 @@ Report the following
 
 ```python
 # insert your answer here
-x=2
 ```
 
 ### 2)
@@ -47,7 +46,7 @@ Display the flow rate in L/s using the .to method.
 ### 3)
 What is the Reynolds number and friction factor for this maximum flow? Assign these values to variable names so you can plot them later on the Moody diagram.
 ```python
-# insert your answer here
+x=3
 
 ```
 
