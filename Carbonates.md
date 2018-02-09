@@ -88,7 +88,7 @@ def alpha2_carbonate(pH):
 Let's plot the alphas!
 ```python
 # Create a uniform spaced array from 3 to 12
-pH_graph = np.linspace(3,12,500)
+pH_graph = np.linspace(3,12,50)
 plt.plot(pH_graph, alpha0_carbonate(pH_graph),'r', pH_graph, alpha1_carbonate(pH_graph),'b',pH_graph, alpha2_carbonate(pH_graph),'g')
 plt.xlabel('pH')
 plt.ylabel('Fraction of total carbonates')
@@ -110,11 +110,11 @@ def ANC_closed(pH,Total_Carbonates):
 def ANC_open(pH):
   return ANC_closed(pH,P_CO2*K_Henry_CO2/alpha0_carbonate(pH))
 
-
+pH_graph = np.linspace(5,7,50)
 plt.plot(pH_graph, ANC_open(pH_graph),'r')
 plt.xlabel('pH')
 plt.ylabel('ANC (mole/L)')
-plt.yscale('log')
+#plt.yscale('log')
 plt.savefig('images/ANCgraph.png')
 plt.show()
 ```
