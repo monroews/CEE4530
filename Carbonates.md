@@ -43,11 +43,11 @@ $$ANC = \frac{{{P_{C{O_2}}}{K_H}}}{{{\alpha_0}}}({\alpha_1} + 2{\alpha_2}) + \fr
 
 ```python
 from aide_design.play import *
-Kw = 10**(-14)
+Kw = 10**(-14) * (u.mole/u.L)**2
 K1_carbonate = 10**(-6.37)*u.mol/u.L
 K2_carbonate = 10**(-10.25)*u.mol/u.L
-K_Henry_CO2 = 10**(-1.5)
-P_CO2 = 10**(-3.5)
+K_Henry_CO2 = 10**(-1.5) * u.mole/(u.L*u.atm)
+P_CO2 = 10**(-3.5) * u.atm
 
 
 def invpH(pH):
@@ -65,22 +65,37 @@ def alpha2_carbonate(pH):
   alpha2_carbonate = 1/(1+(invpH(pH)/K2_carbonate)*(1+(invpH(pH)/K1_carbonate)))
   return alpha2_carbonate
 
-def ANC_closed(pH,Total_Carbonates):
-  return Total_Carbonates*(alpha1_carbonate(pH)+2*alpha2_carbonate(pH)) +
+
+
+
 ```
 Let's plot the alphas!
 ```python
 # Create a uniform spaced array from 3 to 12
-pH_graph = np.linspace(3,12,50)
+pH_graph = np.linspace(3,12,500)
 plt.plot(pH_graph, alpha0_carbonate(pH_graph),'r', pH_graph, alpha1_carbonate(pH_graph),'b',pH_graph, alpha2_carbonate(pH_graph),'g')
 plt.xlabel('pH')
 plt.ylabel('Fraction of total carbonates')
 plt.legend(['alpha_0', 'alpha_1', 'alpha_2'], loc='best')
 
-plt.savefig('alphagraph.png')
+plt.savefig('images/alphagraph.png')
 plt.show()
 ```
 
 Here is the graph ![graph](images\alphagraph.png)
 
+
 ```Python
+def ANC_closed(pH,Total_Carbonates):
+  return Total_Carbonates*(alpha1_carbonate(pH)+2*alpha2_carbonate(pH)) + Kw/invpH(pH) - invpH(pH)
+
+def ANC_open(pH):
+  return ANC_closed(pH,P_CO2*K_Henry_CO2/alpha0_carbonate(pH))
+
+plt.plot(pH_graph, ANC_open(pH_graph),'r')
+plt.xlabel('pH')
+plt.ylabel('ANC')
+plt.yscale('log')
+plt.savefig('images/ANCgraph.png')
+plt.show()
+```
