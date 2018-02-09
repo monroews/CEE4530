@@ -19,7 +19,7 @@
 ### Carbonate Chemistry
 Carbonic acid and bicarbonate
 $${H_2}CO_3^* \overset {K_1} \longleftrightarrow {H^+} + HCO_3^- $$
-Why is this purple?
+
 $${K_1} = \frac{{\left[ {{H^ + }} \right]\left[ {HCO_3^ - } \right]}}{{\left[ {{H_2}CO_3^* } \right]}}$$
 $$p{K_1} = 6.3$$
 
@@ -98,31 +98,42 @@ plt.savefig('images/alphagraph.png')
 plt.show()
 ```
 
-Here is the graph ![graph](images/alphagraph.png)
+The alpha terms representing the carbonate species are shown in Figure 1.
+ ![graph](images/alphagraph.png)
 
-images\alphagraph.png
-C:\Users\mw24\Google Drive\4530\website\pptx
+Figure 1. Carbonate species relative importance as a function of pH.
+
 ```Python
 def ANC_closed(pH,Total_Carbonates):
   return Total_Carbonates*(alpha1_carbonate(pH)+2*alpha2_carbonate(pH)) + Kw/invpH(pH) - invpH(pH)
 
 def ANC_open(pH):
-  return (ANC_closed(pH,P_CO2*K_Henry_CO2/alpha0_carbonate(pH))).magnitude
-  
+  return ANC_closed(pH,P_CO2*K_Henry_CO2/alpha0_carbonate(pH))
+
 
 plt.plot(pH_graph, ANC_open(pH_graph),'r')
 plt.xlabel('pH')
-plt.ylabel('ANC')
+plt.ylabel('ANC (mole/L)')
 plt.yscale('log')
 plt.savefig('images/ANCgraph.png')
 plt.show()
 ```
-Here is the graph ![graph](images\ANCgraph.png)
+Figure 2 shows the ANC as a function of pH for a system that is in equilibrium with the atmosphere.
+ ![graph](images\ANCgraph.png)
+
+ Figure 2. ANC as a function of pH in a system in equilibrium with the atmosphere.
+
 ```Python
 import scipy
 from scipy import optimize
-help(optimize.brentq)
-x=ANC_open(pH)
-optimize.brentq(ANC_open, 5, 7)	
 
+# Strip the units off of the ANC function so that scipy can calculate the root.
+def ANC_open_unitless(pH):
+  return (ANC_open(pH)).magnitude
+
+def pH_open():
+  return optimize.brentq(ANC_open_unitless, 1, 12)
+
+pH_open()
+print('The pH of pure water in equilibrium with the atmosphere is', pH_open())
 ```
