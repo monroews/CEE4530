@@ -1,4 +1,20 @@
+# Third-party imports
+#import numpy as np
+#import pandas as pd
+#import matplotlib.pyplot as plt
+#import matplotlib
 
+# AIDE imports
+#import aide_design
+#import aide_design.pipedatabase as pipe
+#from aide_design.units import unit_registry as u
+#from aide_design import physchem as pc
+#import aide_design.expert_inputs as exp
+#import aide_design.materials_database as mat
+#import aide_design.utility as ut
+#import aide_design.k_value_of_reductions_utility as k
+#import aide_design.pipeline_utility as pipeline
+#import warnings
 
 ### Carbonate Chemistry
 Carbonic acid and bicarbonate
@@ -82,15 +98,17 @@ plt.savefig('images/alphagraph.png')
 plt.show()
 ```
 
-Here is the graph ![graph](images\alphagraph.png)
+Here is the graph ![graph](images/alphagraph.png)
 
-
+images\alphagraph.png
+C:\Users\mw24\Google Drive\4530\website\pptx
 ```Python
 def ANC_closed(pH,Total_Carbonates):
   return Total_Carbonates*(alpha1_carbonate(pH)+2*alpha2_carbonate(pH)) + Kw/invpH(pH) - invpH(pH)
 
 def ANC_open(pH):
-  return ANC_closed(pH,P_CO2*K_Henry_CO2/alpha0_carbonate(pH))
+  return (ANC_closed(pH,P_CO2*K_Henry_CO2/alpha0_carbonate(pH))).magnitude
+  
 
 plt.plot(pH_graph, ANC_open(pH_graph),'r')
 plt.xlabel('pH')
@@ -98,4 +116,13 @@ plt.ylabel('ANC')
 plt.yscale('log')
 plt.savefig('images/ANCgraph.png')
 plt.show()
+```
+Here is the graph ![graph](images\ANCgraph.png)
+```Python
+import scipy
+from scipy import optimize
+help(optimize.brentq)
+x=ANC_open(pH)
+optimize.brentq(ANC_open, 5, 7)	
+
 ```
