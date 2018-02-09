@@ -36,11 +36,14 @@ $${\alpha_{\text{2}}}  =  \frac{1}{{\frac{{{{[{{\rm H}^ + }]}^2}}}{{{{\rm K}_1}{
 
 $${\alpha_{\text{2}}}  =  \frac{1}{{1 + \frac{{[{{\rm H}^ + }]}}{{{{\rm K}_2}}}\left( {1 + \frac{{[{{\rm H}^ + }]}}{{{{\rm K}_1}}}} \right)}}$$
 
+closed to the atmosphere
+$$ANC = {C_T}({\alpha _1} + 2{\alpha _2}) + \frac{{{K_w}}}{{\left[ {{H^ + }} \right]}} - \left[ {{H^ + }} \right]$$
 open to the atmosphere
 $$ANC = \frac{{{P_{C{O_2}}}{K_H}}}{{{\alpha_0}}}({\alpha_1} + 2{\alpha_2}) + \frac{{{K_w}}}{{\left[ {{H^ + }} \right]}} - \left[ {{H^ + }} \right]$$
 
 ```python
 from aide_design.play import *
+Kw = 10**(-14)
 K1_carbonate = 10**(-6.37)*u.mol/u.L
 K2_carbonate = 10**(-10.25)*u.mol/u.L
 K_Henry_CO2 = 10**(-1.5)
@@ -62,8 +65,8 @@ def alpha2_carbonate(pH):
   alpha2_carbonate = 1/(1+(invpH(pH)/K2_carbonate)*(1+(invpH(pH)/K1_carbonate)))
   return alpha2_carbonate
 
-def ANC_open(arg):
-  pass
+def ANC_closed(pH,Total_Carbonates):
+  return Total_Carbonates*(alpha1_carbonate(pH)+2*alpha2_carbonate(pH)) +
 ```
 Let's plot the alphas!
 ```python
@@ -74,7 +77,7 @@ plt.xlabel('pH')
 plt.ylabel('Fraction of total carbonates')
 plt.legend(['alpha_0', 'alpha_1', 'alpha_2'], loc='best')
 
-plt.savefig('images\alphagraph.png')
+plt.savefig('alphagraph.png')
 plt.show()
 ```
 
