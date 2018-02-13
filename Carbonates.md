@@ -1,20 +1,20 @@
 # Third-party imports
-#import numpy as np
-#import pandas as pd
-#import matplotlib.pyplot as plt
-#import matplotlib
+- import numpy as np
+- import pandas as pd
+- import matplotlib.pyplot as plt
+- import matplotlib
 
 # AIDE imports
-#import aide_design
-#import aide_design.pipedatabase as pipe
-#from aide_design.units import unit_registry as u
-#from aide_design import physchem as pc
-#import aide_design.expert_inputs as exp
-#import aide_design.materials_database as mat
-#import aide_design.utility as ut
-#import aide_design.k_value_of_reductions_utility as k
-#import aide_design.pipeline_utility as pipeline
-#import warnings
+- import aide_design
+- import aide_design.pipedatabase as pipe
+- from aide_design.units import unit_registry as u
+- from aide_design import physchem as pc
+- import aide_design.expert_inputs as exp
+- import aide_design.materials_database as mat
+- import aide_design.utility as ut
+- import aide_design.k_value_of_reductions_utility as k
+- import aide_design.pipeline_utility as pipeline
+- import warnings
 
 ### Carbonate Chemistry
 Carbonic acid and bicarbonate
@@ -65,6 +65,7 @@ K2_carbonate = 10**(-10.25)*u.mol/u.L
 K_Henry_CO2 = 10**(-1.5) * u.mole/(u.L*u.atm)
 P_CO2 = 10**(-3.5) * u.atm
 
+np.ex
 
 def invpH(pH):
   return 10**(-pH)*u.mol/u.L
