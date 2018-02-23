@@ -24,9 +24,9 @@ import Environmental_Processes_Analysis as EPA
 import importlib
 importlib.reload(EPA)
 
-EPA.notes
+
 data_file_path = 'Lab5Part2(CMFR_Final).xls'
-print(Pro.notes(data_file_path))
+print(EPA.notes(data_file_path))
 
 firstrow = 36
 time_data = EPA.ftime(data_file_path,firstrow,-1)
@@ -58,7 +58,7 @@ plt.show()
 
 
 ```
-The concentration data shows a rapid increase followed by
+The concentration data shows a rapid increase followed by the classic washout of a CMFR.
 
 ```Python
 myt=t=np.linspace(0,3,50)
