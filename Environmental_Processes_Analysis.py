@@ -128,8 +128,40 @@ def CMFR(C_initial,C_influent,t):
     """
     return C_influent * (1-np.exp(-t)) + C_initial*np.exp(-t)
 
-def E_CMFR_N(N,t):
+def E_CMFR_N(t, N):
     """ This function calculates a dimensionless measure of the output tracer concentration from a spike input to a series of completely mixed flow reactors.
+
+    Parameters
+    ----------
+    t: time made dimensionless by dividing by the residence time of one of the CMFR. t can be a single value or a numpy array.
+
+    N : The number of completely mixed flow reactors (CMFR) in series. This would logically be constrained to real numbers greater than 1.
+
+    Returns
+    -------
+    (Concentration * volume of 1 CMFR) / (mass of tracer)
+
+    """
+    return (N**N)/special.gamma(N) * (t**(N-1))*np.exp(-N*t)
+
+def E_Advective_Dispersion(t, Pe):
+    """ This function calculates a dimensionless measure of the output tracer concentration from a spike input to reactor with advection and dispersion.
+    Parameters
+    ----------
+    t: time made dimensionless by dividing by the reactor residence time. t can be a single value or a numpy array.
+
+    Pe : The ratio of advection to dispersion ((mean fluid velocity)/(Dispersion*flow path length))
+
+    Returns
+    -------
+    (Concentration * volume of reactor) / (mass of tracer)
+
+    """
+    return (Pe/(4*np.pi*t))**(0.5)*np.exp((-Pe*((1-t)**2))/(4*t))
+
+def Optimize_E_CMFR_N(t_data,C_data,t_dim,C_dim):
+    """ This function
+    tracer concentration from a spike input to a series of completely mixed flow reactors.
 
     Parameters
     ----------
@@ -139,22 +171,8 @@ def E_CMFR_N(N,t):
 
     Returns
     -------
-    (Concentration * volume of 1 CMFR) / (mass of tracer)
 
     """
-    return (N**N)/special.gamma(N) * (t**(N-1))*np.exp(-N*t)
-
-def E_Advective_Dispersion(Pe,t):
-    """ This function calculates a dimensionless measure of the output tracer concentration from a spike input to reactor with advection and dispersion.
-    Parameters
-    ----------
-    Pe : The ratio of advection to dispersion ((mean fluid velocity)/(Dispersion*flow path length))
-
-    t: time made dimensionless by dividing by the reactor residence time. t can be a single value or a numpy array.
-
-    Returns
-    -------
-    (Concentration * volume of reactor) / (mass of tracer)
-
-    """
-    return (Pe/(4*np.pi*t))**(0.5)*np.exp((-Pe*((1-t)**2))/(4*t))
+#E_data = C_data/(Mass_tracer*Volume_reactor)
+#t_dim = t_data/(Volume_reactor/Flow)
+#scipy.optimize.curve_fit(t_dim,E_data)
