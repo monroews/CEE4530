@@ -1,6 +1,8 @@
 from aide_design.play import *
 import scipy
 from scipy import special
+from scipy.optimize import curve_fit
+import collections
 
 def ftime(data_file_path,start,end):
     """ This function extracts the column of times from a ProCoDA data file.
@@ -110,7 +112,7 @@ def ANC_open(pH):
 
 # Reactors
 # The following code is for reactor responses to tracer inputs.
-def CMFR(C_initial,C_influent,t):
+def CMFR(t,C_initial,C_influent):
     """ This function calculates the output concentration of a completely mixed flow reactor given an influent and initial concentration.
 
     Parameters
@@ -157,22 +159,116 @@ def E_Advective_Dispersion(t, Pe):
     (Concentration * volume of reactor) / (mass of tracer)
 
     """
+    t[t==0]=10**(-50)
     return (Pe/(4*np.pi*t))**(0.5)*np.exp((-Pe*((1-t)**2))/(4*t))
 
-def Optimize_E_CMFR_N(t_data,C_data,t_dim,C_dim):
-    """ This function
-    tracer concentration from a spike input to a series of completely mixed flow reactors.
+def Tracer_CMFR_N(t_seconds, t_bar, C_bar, N):
+    """ Used by Solver_CMFR_N. All inputs and outputs are unitless.
+    This is The model function, f(x, ...). It takes the independent variable as the first argument and the parameters to fit as separate remaining arguments.
 
     Parameters
     ----------
-    N : The number of completely mixed flow reactors (CMFR) in series. This would logically be constrained to real numbers greater than 1.
+    t_seconds : Array of times (units of seconds, but unitless)
 
-    t: time made dimensionless by dividing by the residence time of one of the CMFR. t can be a single value or a numpy array.
+    t_bar : Average time spent in one CMFR (units of seconds, but unitless).
+
+    C_bar : (Mass of tracer)/(volume of one CMFR) unitless.
+
+    N : The number of completely mixed flow reactors (CMFR) in series. This would logically be constrained to real numbers greater than 1.
 
     Returns
     -------
+    (C_bar*E_CMFR_N(t_seconds/t_bar, N))
 
     """
-#E_data = C_data/(Mass_tracer*Volume_reactor)
-#t_dim = t_data/(Volume_reactor/Flow)
-#scipy.optimize.curve_fit(t_dim,E_data)
+
+    return C_bar*E_CMFR_N(t_seconds/t_bar, N)
+
+def Solver_CMFR_N(t_data, C_data, theta_guess, C_bar_guess):
+    """ Use non-linear least squares to fit the function, Tracer_CMFR_N(t_seconds, t_bar, C_bar, N), to reactor data.
+
+    Parameters
+    ----------
+    t_data : Array of times with units
+
+    C_data : Array of tracer concentration data with units
+
+    theta_guess : Estimate of time spent in one CMFR with units.
+
+    C_bar_guess : Estimate of (Mass of tracer)/(volume of one CMFR) with units.
+
+
+    Returns
+    -------
+    a tuple with theta (units of s), C_bar (same units as C_bar_guess), and N as the best fit to the data.
+
+    """
+
+    C_unitless = C_data.magnitude
+    C_units = str(C_bar_guess.units)
+    t_seconds = (t_data.to(u.s)).magnitude
+    # assume that a guess of 1 reactor in series is close enough to get a solution
+    p0 = [theta_guess.to(u.s).magnitude, C_bar_guess.magnitude,1]
+    popt, pcov = curve_fit(Tracer_CMFR_N, t_seconds, C_unitless, p0)
+    Solver_theta = popt[0]*u.s
+    Solver_C_bar = popt[1]*u(C_units)
+    Solver_N = popt[2]
+    Reactor_results = collections.namedtuple('Reactor_results','theta C_bar N')
+    CMFR = Reactor_results(theta=Solver_theta, C_bar = Solver_C_bar, N = Solver_N)
+    return CMFR
+
+
+def Tracer_AD_Pe(t_seconds, t_bar, C_bar, Pe):
+    """ Used by Solver_AD_Pe. All inputs and outputs are unitless.
+    This is The model function, f(x, ...). It takes the independent variable as the first argument and the parameters to fit as separate remaining arguments.
+
+    Parameters
+    ----------
+    t_seconds : Array of times (units of seconds, but unitless)
+
+    t_bar : Average time spent in one CMFR (units of seconds, but unitless).
+
+    C_bar : (Mass of tracer)/(volume of one CMFR) unitless.
+
+    Pe : The Peclet number for the reactor.
+
+    Returns
+    -------
+    C_bar*E_Advective_Dispersion(t_seconds/t_bar, Pe)
+
+    """
+
+    return C_bar*E_Advective_Dispersion(t_seconds/t_bar, Pe)
+
+def Solver_AD_Pe(t_data, C_data, theta_guess, C_bar_guess):
+    """ Use non-linear least squares to fit the function, Tracer_AD_Pe(t_seconds, t_bar, C_bar, Pe), to reactor data.
+
+    Parameters
+    ----------
+    t_data : Array of times with units
+
+    C_data : Array of tracer concentration data with units
+
+    theta_guess : Estimate of time spent in one CMFR with units.
+
+    C_bar_guess : Estimate of (Mass of tracer)/(volume of one CMFR) with units.
+
+
+    Returns
+    -------
+    a tuple with theta (units of s), C_bar (same units as C_bar_guess), and Pe as the best fit to the data.
+
+    """
+
+    C_unitless = C_data.magnitude
+    C_units = str(C_bar_guess.units)
+    t_seconds = (t_data.to(u.s)).magnitude
+    # assume that a guess of 1 reactor in series is close enough to get a solution
+    p0 = [theta_guess.to(u.s).magnitude, C_bar_guess.magnitude,5]
+    popt, pcov = curve_fit(Tracer_AD_Pe, t_seconds, C_unitless, p0)
+    Solver_theta = popt[0]*u.s
+    Solver_C_bar = popt[1]*u(C_units)
+    Solver_Pe = popt[2]
+    Reactor_results = collections.namedtuple('Reactor_results','theta C_bar Pe')
+    AD = Reactor_results(theta=Solver_theta, C_bar = Solver_C_bar, Pe = Solver_Pe)
+    return AD
