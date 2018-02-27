@@ -159,6 +159,7 @@ def E_Advective_Dispersion(t, Pe):
     (Concentration * volume of reactor) / (mass of tracer)
 
     """
+    #replace any times at zero with a number VERY close to zero to avoid divide by zero errors
     t[t==0]=10**(-50)
     return (Pe/(4*np.pi*t))**(0.5)*np.exp((-Pe*((1-t)**2))/(4*t))
 
