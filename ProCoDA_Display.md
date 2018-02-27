@@ -48,7 +48,7 @@ plt.show()
 #We need to force this to be dimensionless so that it simplifies the units.
 time_dim = np.divide(time_data,time_residence).to(u.dimensionless)
 E_CMFR_data = concentration_data/C_initial
-plt.plot(time_dim, E_CMFR_data,'r',time_dim, EPA.E_CMFR_N(1,time_dim),'b')
+plt.plot(time_dim, E_CMFR_data,'r',time_dim, EPA.E_CMFR_N(time_dim,1),'b')
 plt.xlabel(r'$\frac{t}{\theta}$')
 plt.ylabel(r'$\frac{C}{C_0}$')
 plt.legend(['Measured dye','CMFR Model'])
@@ -58,11 +58,27 @@ plt.show()
 
 
 ```
-The concentration data shows a rapid increase followed by the classic washout of a CMFR.
+Now we need a method to do multiple variable fitting to a model
 
-```Python
-myt=t=np.linspace(0,3,50)
-EPA.E_Advective_Dispersion
-print(EPA.E_CMFR_N(0.5,myt))
+```python
+import scipy
+from scipy import optimize
+
+
+
+# Strip the units off of the ANC function so that scipy can calculate the root. Scipy is not yet compatible with units.
+def ANC_open_unitless(pH):
+  return (EPA.ANC_open(pH)).magnitude
+#Now we can find the pH of pure water by using a root finding algorithm.
+def pH_open():
+  return optimize.brentq(ANC_open_unitless, 1, 12)
+```
+```python
+import collections
+foo = collections.namedtuple('junk','mystring array')
+bob = foo('he is friendly',[5,3])
+bob.array[0]
+
+
 
 ```
