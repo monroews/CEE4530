@@ -47,7 +47,8 @@ def Column_of_data(data_file_path,start,end,column,units):
     The first data column is column 1.
 
     units: string of the units you want to apply to the data.
-    Example 'mg/L'
+    Example 'mg/L'S
+    If an empty string, '', is passed then no units are applied.
 
     Returns
     -------
@@ -55,7 +56,10 @@ def Column_of_data(data_file_path,start,end,column,units):
 
     """
     df = pd.read_csv(data_file_path,delimiter='\t')
-    data = np.array(pd.to_numeric(df.iloc[start:end,column]))*u(units)
+    if units == '':
+        data = np.array(pd.to_numeric(df.iloc[start:end,column]))
+    else:
+        data = np.array(pd.to_numeric(df.iloc[start:end,column]))*u(units)
     return data;
 
 def notes(data_file_path):
