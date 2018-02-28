@@ -135,7 +135,7 @@ def E_CMFR_N(t, N):
 
     Parameters
     ----------
-    t: time made dimensionless by dividing by the residence time of one of the CMFR. t can be a single value or a numpy array.
+    t: time made dimensionless by dividing by the residence time of the reactor. t can be a single value or a numpy array.
 
     N : The number of completely mixed flow reactors (CMFR) in series. This would logically be constrained to real numbers greater than 1.
 
@@ -171,16 +171,16 @@ def Tracer_CMFR_N(t_seconds, t_bar, C_bar, N):
     ----------
     t_seconds : Array of times (units of seconds, but unitless)
 
-    t_bar : Average time spent in one CMFR (units of seconds, but unitless).
+    t_bar : Average time spent in the total reactor (units of seconds, but unitless).
 
-    C_bar : (Mass of tracer)/(volume of one CMFR) unitless.
+    C_bar : (Mass of tracer)/(volume of the total reactor) unitless.
 
     N : The number of completely mixed flow reactors (CMFR) in series. This would logically be constrained to real numbers greater than 1.
 
     Returns
     -------
     (C_bar*E_CMFR_N(t_seconds/t_bar, N))
-
+    The model concentration as a function of time
     """
 
     return C_bar*E_CMFR_N(t_seconds/t_bar, N)
@@ -194,9 +194,9 @@ def Solver_CMFR_N(t_data, C_data, theta_guess, C_bar_guess):
 
     C_data : Array of tracer concentration data with units
 
-    theta_guess : Estimate of time spent in one CMFR with units.
+    theta_guess : Estimate of time spent in the total reactor with units.
 
-    C_bar_guess : Estimate of (Mass of tracer)/(volume of one CMFR) with units.
+    C_bar_guess : Estimate of (Mass of tracer)/(volume of the total reactor) with units.
 
 
     Returns
@@ -227,16 +227,16 @@ def Tracer_AD_Pe(t_seconds, t_bar, C_bar, Pe):
     ----------
     t_seconds : Array of times (units of seconds, but unitless)
 
-    t_bar : Average time spent in one CMFR (units of seconds, but unitless).
+    t_bar : Average time spent in the reactor (units of seconds, but unitless).
 
-    C_bar : (Mass of tracer)/(volume of one CMFR) unitless.
+    C_bar : (Mass of tracer)/(volume of the reactor) unitless.
 
     Pe : The Peclet number for the reactor.
 
     Returns
     -------
     C_bar*E_Advective_Dispersion(t_seconds/t_bar, Pe)
-
+    The model concentration as a function of time
     """
 
     return C_bar*E_Advective_Dispersion(t_seconds/t_bar, Pe)
@@ -253,7 +253,6 @@ def Solver_AD_Pe(t_data, C_data, theta_guess, C_bar_guess):
     theta_guess : Estimate of time spent in one CMFR with units.
 
     C_bar_guess : Estimate of (Mass of tracer)/(volume of one CMFR) with units.
-
 
     Returns
     -------
