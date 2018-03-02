@@ -70,13 +70,14 @@ concentration_data = EPA.Column_of_data(data_file_path,firstrow,-1,1,'mole/L')
 V_CMFR = 1.5*u.L
 Q_CMFR = 380 * u.mL/u.min
 theta_guess = (V_CMFR/Q_CMFR).to(u.s)
+theta_guess
 C_bar_guess = np.max(concentration_data)
 
 #use solver to get the CMFR parameters
 CMFR = EPA.Solver_CMFR_N(time_data, concentration_data, theta_guess, C_bar_guess)
 CMFR.C_bar
 CMFR.N
-CMFR.theta
+CMFR.theta.to(u.min)
 #Create the CMFR model curve based on the solver parameters
 CMFR_model = (CMFR.C_bar*EPA.E_CMFR_N(time_data/CMFR.theta, CMFR.N)).to(u.mole/u.L)
 
@@ -84,7 +85,7 @@ CMFR_model = (CMFR.C_bar*EPA.E_CMFR_N(time_data/CMFR.theta, CMFR.N)).to(u.mole/u
 AD = EPA.Solver_AD_Pe(time_data, concentration_data, theta_guess, C_bar_guess)
 AD.C_bar
 AD.Pe
-AD.theta
+AD.theta.to(u.min)
 #Create the advection dispersion model curve based on the solver parameters
 AD_model = (AD.C_bar*EPA.E_Advective_Dispersion((time_data/AD.theta).to_base_units(), AD.Pe)).to(u.mole/u.L)
 
@@ -92,11 +93,12 @@ AD_model = (AD.C_bar*EPA.E_Advective_Dispersion((time_data/AD.theta).to_base_uni
 plt.plot(time_data.to(u.min), concentration_data.to(u.mole/u.L),'r')
 plt.plot(time_data.to(u.min), CMFR_model,'b')
 plt.plot(time_data.to(u.min), AD_model,'g')
-plt.xlabel(r'$\frac{t}{\theta}$')
-plt.ylabel(r'$\frac{C}{C_0}$')
+plt.xlabel(r'$time (min)$')
+plt.ylabel(r'Concentration $\left ( \frac{mg}{L} \right )$')
 plt.legend(['Measured dye','CMFR Model', 'AD Model'])
 
 plt.savefig('images/reactorplot.png')
 plt.show()
 
 ```
+![graph](images/reactorplot.png)
