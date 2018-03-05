@@ -6,6 +6,7 @@ import collections
 
 def ftime(data_file_path,start,end):
     """ This function extracts the column of times from a ProCoDA data file.
+    The file must be the original tab delimited file.
 
     Parameters
     ----------
@@ -31,6 +32,7 @@ def ftime(data_file_path,start,end):
 
 def Column_of_data(data_file_path,start,end,column,units):
     """ This function extracts a column of data from a ProCoDA data file.
+    The file must be the original tab delimited file.
 
     Parameters
     ----------
@@ -64,7 +66,7 @@ def Column_of_data(data_file_path,start,end,column,units):
 
 def notes(data_file_path):
     """This function extracts any experimental notes from a ProCoDA data file.
-
+    The file must be the original tab delimited file.
     Parameters
     ----------
     data_file_path : string of the file name or file path.
