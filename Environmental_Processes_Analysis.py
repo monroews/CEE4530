@@ -4,6 +4,39 @@ from scipy import special
 from scipy.optimize import curve_fit
 import collections
 
+def Gran(data_file_path):
+    """ This function extracts the data from a ProCoDA Gran plot file.
+    The file must be the original tab delimited file.
+
+    Parameters
+    ----------
+    data_file_path : string of the file name or file path.
+    If the file is in the working directory, then the file name is sufficient.
+    Example data_file_path = 'Reactor_data.txt'
+
+    Returns
+    -------
+    V_titrant (mL) as numpy array
+    ph_data as numpy array (no units)
+    V_Sample (mL) volume of the original sample that was titrated
+    Normality_Titrant (mole/L) normality of the acid used to titrate the sample
+    V_equivalent (mL) volume of acid required to consume all of the ANC
+    ANC (mole/L) Acid Neutralizing Capacity of the sample
+
+    """
+    df = pd.read_csv(data_file_path,delimiter='\t',header=5)
+    V_t = np.array(pd.to_numeric(df.iloc[0:,0]))*u.mL
+    pH = np.array(pd.to_numeric(df.iloc[0:,1]))
+    df = pd.read_csv(data_file_path,delimiter='\t',header=-1,nrows=5)
+    V_S = pd.to_numeric(df.iloc[0,1])*u.mL
+    N_t = pd.to_numeric(df.iloc[1,1])*u.mole/u.L
+    V_eq = pd.to_numeric(df.iloc[2,1])*u.mL
+    ANC_sample = pd.to_numeric(df.iloc[3,1])*u.mole/u.L
+    Gran_results = collections.namedtuple('Gran_results','V_titrant ph_data V_Sample Normality_Titrant V_equivalent ANC')
+    Gran = Gran_results(V_titrant=V_t, ph_data=pH,V_Sample=V_S, Normality_Titrant=N_t, V_equivalent=V_eq, ANC=ANC_sample )
+    return Gran;
+
+
 def ftime(data_file_path,start,end):
     """ This function extracts the column of times from a ProCoDA data file.
     The file must be the original tab delimited file.
