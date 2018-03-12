@@ -18,8 +18,8 @@ def Gran(data_file_path):
     -------
     V_titrant (mL) as numpy array
     ph_data as numpy array (no units)
-    V_Sample (mL) volume of the original sample that was titrated
-    Normality_Titrant (mole/L) normality of the acid used to titrate the sample
+    V_sample (mL) volume of the original sample that was titrated
+    Normality_titrant (mole/L) normality of the acid used to titrate the sample
     V_equivalent (mL) volume of acid required to consume all of the ANC
     ANC (mole/L) Acid Neutralizing Capacity of the sample
 
@@ -32,8 +32,8 @@ def Gran(data_file_path):
     N_t = pd.to_numeric(df.iloc[1,1])*u.mole/u.L
     V_eq = pd.to_numeric(df.iloc[2,1])*u.mL
     ANC_sample = pd.to_numeric(df.iloc[3,1])*u.mole/u.L
-    Gran_results = collections.namedtuple('Gran_results','V_titrant ph_data V_Sample Normality_Titrant V_equivalent ANC')
-    Gran = Gran_results(V_titrant=V_t, ph_data=pH,V_Sample=V_S, Normality_Titrant=N_t, V_equivalent=V_eq, ANC=ANC_sample )
+    Gran_results = collections.namedtuple('Gran_results','V_titrant ph_data V_sample Normality_titrant V_equivalent ANC')
+    Gran = Gran_results(V_titrant=V_t, ph_data=pH,V_sample=V_S, Normality_titrant=N_t, V_equivalent=V_eq, ANC=ANC_sample )
     return Gran;
 
 
