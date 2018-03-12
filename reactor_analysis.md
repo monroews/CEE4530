@@ -79,6 +79,7 @@ CMFR.C_bar
 CMFR.N
 CMFR.theta.to(u.min)
 #Create the CMFR model curve based on the solver parameters
+#We do this with dimensions so that we can plot both models and the data on the same graph. If we did this in dimensionless it wouldn't be possible to plot everything on the same plot because the values used to create dimensionless time and dimensionless concentration are different for the two models.
 CMFR_model = (CMFR.C_bar*EPA.E_CMFR_N(time_data/CMFR.theta, CMFR.N)).to(u.mole/u.L)
 
 #use solver to get the advection dispersion parameters
@@ -90,7 +91,7 @@ AD.theta.to(u.min)
 AD_model = (AD.C_bar*EPA.E_Advective_Dispersion((time_data/AD.theta).to_base_units(), AD.Pe)).to(u.mole/u.L)
 
 #Plot the data and the two model curves.
-plt.plot(time_data.to(u.min), concentration_data.to(u.mole/u.L),'r')
+plt.plot(time_data.to(u.min), concentration_data.to(u.mole/u.L),'-')
 plt.plot(time_data.to(u.min), CMFR_model,'b')
 plt.plot(time_data.to(u.min), AD_model,'g')
 plt.xlabel(r'$time (min)$')
