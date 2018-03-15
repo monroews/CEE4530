@@ -3,6 +3,67 @@ import scipy
 from scipy import special
 from scipy.optimize import curve_fit
 import collections
+import os
+import tkinter as tk
+from tkinter import filedialog
+root = tk.Tk()
+root.withdraw()
+
+def aeration_data(DO_column):
+    """ This function extracts the data from folder containing tab delimited files of aeration data.
+    The file must be the original tab delimited file.
+    All text strings below the header must be removed from these files.
+    The file names must be the air flow rates with units of micromoles/s.
+    An example file name would be "300.xls" where 300 is the flowr ate in micromoles/s
+    The function opens a file dialog for the user to select the directory containing the data.
+
+    Parameters
+    ----------
+    DO_column: index of the column that contains the dissolved oxygen concentration data.
+
+    Returns
+    -------
+    filepaths: list of all file paths in the directory sorted by flow rate
+    airflows: sorted numpy array of air flow rates with units of micromole/s attached
+    DO_data: sorted list of numpy arrays. Thus each of the numpy data arrays can have different lengths to accommodate short and long experiments
+    time_data: sorted list of numpy arrays containing the times with units of seconds. Each
+    """
+
+    dirpath = filedialog.askdirectory()
+    #return the list of files in the directory
+    filenames = os.listdir(dirpath)
+    #extract the flowrates from the filenames and apply units
+    airflows=((np.array([i.split('.', 1)[0] for i in filenames])).astype(np.float32))
+    #sort airflows and filenames so that they are in ascending order of flow rates
+    idx   = np.argsort(airflows)
+    airflows = (np.array(airflows)[idx])*u.umole/u.s
+    filenames = np.array(filenames)[idx]
+
+    filepaths = [os.path.join(dirpath, i) for i in filenames]
+    #DO_data is a list of numpy arrays. Thus each of the numpy data arrays can have different lengths to accommodate short and long experiments
+    # cycle through all of the files and extract the column of data with oxygen concentrations and the times
+    DO_data=[Column_of_data(i,0,-1,DO_column,'mg/L') for i in filepaths]
+    time_data=[(ftime(i,0,-1)).to(u.s) for i in filepaths]
+    aeration_collection = collections.namedtuple('aeration_results','filepaths airflows DO_data time_data')
+    aeration_results = aeration_collection(filepaths, airflows, DO_data, time_data)
+    return aeration_results
+
+def O2_sat(Pressure_air,Temperature):
+    """
+    This equation is valid for 278 K < T < 318 K
+
+    Parameters
+    ----------
+    Pressure_air: air pressure with appropriate units.
+    Temperature: water temperature with appropriate units
+
+    Returns
+    -------
+    Saturated oxygen concentration in mg/L
+    """
+    fraction_O2 = 0.21
+    Pressure_O2 = Pressure_air *fraction_O2
+    return (Pressure_O2.to(u.atm).magnitude)*u.mg/u.L*np.exp(1727/Temperature.to(u.K).magnitude - 2.105)
 
 def Gran(data_file_path):
     """ This function extracts the data from a ProCoDA Gran plot file.
@@ -32,8 +93,8 @@ def Gran(data_file_path):
     N_t = pd.to_numeric(df.iloc[1,1])*u.mole/u.L
     V_eq = pd.to_numeric(df.iloc[2,1])*u.mL
     ANC_sample = pd.to_numeric(df.iloc[3,1])*u.mole/u.L
-    Gran_results = collections.namedtuple('Gran_results','V_titrant ph_data V_sample Normality_titrant V_equivalent ANC')
-    Gran = Gran_results(V_titrant=V_t, ph_data=pH,V_sample=V_S, Normality_titrant=N_t, V_equivalent=V_eq, ANC=ANC_sample )
+    Gran_collection = collections.namedtuple('Gran_results','V_titrant ph_data V_sample Normality_titrant V_equivalent ANC')
+    Gran = Gran_collection(V_titrant=V_t, ph_data=pH,V_sample=V_S, Normality_titrant=N_t, V_equivalent=V_eq, ANC=ANC_sample )
     return Gran;
 
 
