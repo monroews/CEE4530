@@ -241,9 +241,12 @@ def E_CMFR_N(t, N):
 
     Returns
     -------
-    (Concentration * volume of 1 CMFR) / (mass of tracer)
+    (Concentration * volume of 1 CMFR) / (mass oftracer)
 
     """
+    #make sure that time is dimensionless and not a mixed time unit
+    if hasattr(t, 'magnitude'):
+      t.ito(u.dimensionless)
     return (N**N)/special.gamma(N) * (t**(N-1))*np.exp(-N*t)
 
 def E_Advective_Dispersion(t, Pe):
@@ -259,7 +262,11 @@ def E_Advective_Dispersion(t, Pe):
     (Concentration * volume of reactor) / (mass of tracer)
 
     """
+    #make sure that time is dimensionless and not a mixed time unit
+    if hasattr(t, 'magnitude'):
+      t.ito(u.dimensionless)
     #replace any times at zero with a number VERY close to zero to avoid divide by zero errors
+
     t[t==0]=10**(-50)
     return (Pe/(4*np.pi*t))**(0.5)*np.exp((-Pe*((1-t)**2))/(4*t))
 
