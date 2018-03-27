@@ -46,6 +46,7 @@ def read_procoda_with_states(dates, state, column, units, path=""):
     data_agg = []
     day = 0
     first_day = True
+    overnight = False
 
     for d in dates:
         state_file = path + "statelog " + d + ".xls"
@@ -63,7 +64,12 @@ def read_procoda_with_states(dates, state, column, units, path=""):
         state_end_idx = np.append([False], state_start_idx[0:(np.size(state_start_idx)-1)])
         state_end = states[state_end_idx, 0]
 
-        # check if state_idx[-1] == True
+        if overnight:
+            state_start = np.insert(state_start, 0, 0)
+            state_end = np.insert(state_end, 0, states[0, 0])
+
+        if state_start_idx[-1]:
+            state_end.append(data[0, -1])
 
         data_start = []
         data_end = []
@@ -83,17 +89,25 @@ def read_procoda_with_states(dates, state, column, units, path=""):
 
         for i in range(np.size(data_start)):
             t = data[data_start[i]:data_end[i], 0] + day - start_time
-            if units == '':
-                c = data[data_start[i]:data_end[i], column]
+            # Pint doesn't support units in a multi-dimensional array
+            #if units == '':
+            #    c = data[data_start[i]:data_end[i], column]
+            #else:
+            #    c = data[data_start[i]:data_end[i], column]*u(units)
+            c = data[data_start[i]:data_end[i], column]
+            if overnight and i == 0:
+                data_agg = np.insert(data_agg[-1], np.size(data_agg[-1][:, 0]),
+                                     np.vstack((t, c)).T)
             else:
-                c = data[data_start[i]:data_end[i], column]*u(units)
-            data_agg.append([t, c])
+                data_agg.append(np.vstack((t, c)).T)
 
         day += 1
         if first_day:
             first_day = False
+        if state_start_idx[-1]:
+            overnight = True
 
     return data_agg
 
 # test the function
-read_procoda_with_states(["6-19-2013", "6-20-2013"], "1. Backwash entire system", 28, "mL/s")
+test = read_procoda_with_states(["6-19-2013", "6-20-2013"], "1. Backwash entire system", 28, "mL/s")
