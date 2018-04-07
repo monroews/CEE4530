@@ -1,5 +1,4 @@
 from aide_design.play import *
-import Environmental_Processes_Analysis as epa
 
 # ----
 # for testing purposes only
@@ -11,7 +10,7 @@ units = "mL/s"
 # ----
 
 def read_procoda_with_states(dates, state, column, units, path=""):
-    """Reads a ProCoDA file and outputs the data column and time vector for the
+    """Reads a ProCoDA file and outputs the data column and time vector for
     each iteration of the given state.
 
     Parameters
@@ -36,11 +35,15 @@ def read_procoda_with_states(dates, state, column, units, path=""):
 
     Returns
     -------
-    numpy array of two-column arrays of time and experimental data with units
-    for each iteration of the given state
+    time : float list
+        List of times corresponding to the data
+
+    data : float list
+        List data in the given column during the given state
 
     Example
     -------
+    time, data = read_procoda_with_states(["6-19-2013", "6-20-2013"], "1. Backwash entire system", 28, "mL/s")
 
     """
     data_agg = []
@@ -71,6 +74,7 @@ def read_procoda_with_states(dates, state, column, units, path=""):
         if state_start_idx[-1]:
             state_end.append(data[0, -1])
 
+        # get the corresponding indices in the data array
         data_start = []
         data_end = []
         for i in range(np.size(state_start)):
@@ -83,17 +87,12 @@ def read_procoda_with_states(dates, state, column, units, path=""):
                     data_end.append(j-1)
                     break
 
-        # extract data at those times
         if first_day:
             start_time = data[1, 0]
 
+        # extract data at those times
         for i in range(np.size(data_start)):
             t = data[data_start[i]:data_end[i], 0] + day - start_time
-            # Pint doesn't support units in a multi-dimensional array
-            #if units == '':
-            #    c = data[data_start[i]:data_end[i], column]
-            #else:
-            #    c = data[data_start[i]:data_end[i], column]*u(units)
             c = data[data_start[i]:data_end[i], column]
             if overnight and i == 0:
                 data_agg = np.insert(data_agg[-1], np.size(data_agg[-1][:, 0]),
@@ -107,7 +106,8 @@ def read_procoda_with_states(dates, state, column, units, path=""):
         if state_start_idx[-1]:
             overnight = True
 
-    return data_agg
-
-# test the function
-test = read_procoda_with_states(["6-19-2013", "6-20-2013"], "1. Backwash entire system", 28, "mL/s")
+    np.vstack(data_agg)
+    if units == "":
+        return data_agg[:, 0]*u.s, data_agg[:, 1]*u(units)
+    else:
+        return data_agg[:, 0]*u.s, data_agg[:, 1]
