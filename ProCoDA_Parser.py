@@ -9,7 +9,7 @@ column = 28
 units = "mL/s"
 # ----
 
-def read_procoda_with_states(dates, state, column, units, path=""):
+def read_procoda_with_states(dates, state, column, units="", path=""):
     """Reads a ProCoDA file and outputs the data column and time vector for
     each iteration of the given state.
 
@@ -36,10 +36,10 @@ def read_procoda_with_states(dates, state, column, units, path=""):
     Returns
     -------
     time : float list
-        List of times corresponding to the data
+        List of times corresponding to the data (with units)
 
     data : float list
-        List data in the given column during the given state
+        List data in the given column during the given state with units
 
     Example
     -------
@@ -108,6 +108,6 @@ def read_procoda_with_states(dates, state, column, units, path=""):
 
     np.vstack(data_agg)
     if units == "":
-        return data_agg[:, 0]*u.s, data_agg[:, 1]*u(units)
+        return data_agg[:, 0]*u.day, data_agg[:, 1]*u(units)
     else:
-        return data_agg[:, 0]*u.s, data_agg[:, 1]
+        return data_agg[:, 0]*u.day, data_agg[:, 1]
