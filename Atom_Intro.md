@@ -2,7 +2,7 @@
 Get help at
 [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links)
 ## Headers
-Headers like the one above are made by using the # symbol. Each additional # moves down one level in the outline of your document. 
+Headers like the one above are made by using the # symbol. Each additional # moves down one level in the outline of your document.
 # Heading 1
 ## Heading 2
 ### Heading 3
@@ -47,6 +47,14 @@ Copy the Latex and paste it between $$ $$
 $$Headloss=K\frac{V^{2}}{2g}$$
 Type *Control Shift x* to toggle between displaying the Latex and the beautiful equation
 $$Headloss=K\frac{V^{2}}{2g}$$
+
+Now find an equation in the lab manual. Right click on the equation and select *Show math as  - TeX Commands*. Copy the equation and paste it below.
+
+$$ANC = [HCO_3^-]+2[CO_3^{-2} ]+{[OH}^- ] - [H^+]$$
+
+equation from [Environmental Engineering Laboratory Research Textbook](https://monroews.github.io/EnvEngLabTextbook/Acid_Neutralizing_Capacity/Acid_Neutralizing_Capacity.html).
+
+See how easy it will be to add equations to your reports!
 
 # Python
 ```Python
