@@ -1,5 +1,8 @@
 ```python
-from aide_design.play import*
+from aguaclara.core.units import unit_registry as u
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
 ```
 
 
@@ -14,10 +17,15 @@ This tutorial assumes that you have already installed atom on your computer, tha
 1. create a well formatted graph
 
 ```python
-  data_file_path ="C:\Users\mw24\github\CEE4530\linear_regression.tsv"
+  data_file_path = "https://raw.githubusercontent.com/monroews/CEE4530/master/linear_regression.tsv"
 
 
   df = pd.read_csv(data_file_path,delimiter='\t')
+  x = df['x'].values * u.
+  y = df['y'].values
+
+  x
+x=pd()
 
 ```
 
