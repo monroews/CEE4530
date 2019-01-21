@@ -1,23 +1,26 @@
-```python
-from aguaclara.core.units import unit_registry as u
-import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
-from scipy import stats
-```
-
-
 # Python Tutorial for CEE 4530
 
 This tutorial assumes that you have already installed atom on your computer, that you've configured it to be able to use python, and that you've installed the AguaClara code. The goal of this tutorial is to help you learn some of the essential tools for data analysis and presentation that you will need throughout the semester.
 
+For a more detailed tutorial see the [python tutorial](https://aguaclara.github.io/Textbook/Introduction/Python_Tutorial.html) used for CEE 4520.
+
 ## Objectives
 
 1. illustrate how to load data from a file
+1. learn about dataframes
 1. perform a linear regression
 1. create a well formatted graph
+1. create an equation
+1. add the graph to your document as a figure.
+
+See [Selecting Subsets of Data in Pandas](https://medium.com/dunder-data/selecting-subsets-of-data-in-pandas-6fcd0170be9c) for a good background on working with a pandas dafaframe.
 
 ```python
+  from aguaclara.core.units import unit_registry as u
+  import numpy as np
+  import matplotlib.pyplot as plt
+  import pandas as pd
+  from scipy import stats
   #The data file path is the raw data url on github. Happily python can read directly from a web page.
   data_file_path = "https://raw.githubusercontent.com/monroews/CEE4530/master/linear_regression.tsv"
 
@@ -25,11 +28,6 @@ This tutorial assumes that you have already installed atom on your computer, tha
   df = pd.read_csv(data_file_path,delimiter='\t')
   #if you want to see what is in the dataframe you can print it!
   print(df)
-```
-
-See https://medium.com/dunder-data/selecting-subsets-of-data-in-pandas-6fcd0170be9c for a good background on selecting subsets of data from a pandas dafaframe.
-
-```python
   # The column headers can be access by using the list command
   list(df)
   columns = df.columns
@@ -71,14 +69,30 @@ See https://medium.com/dunder-data/selecting-subsets-of-data-in-pandas-6fcd0170b
   ax.set(ylabel=list(df)[1])
   ax.legend(['Measured', 'Linear regression'])
   ax.grid(True)
+  # Here I save the file to my local harddrive. You will need to change this to work on your computer.
+  # We don't need the file type (png) here.
+  plt.savefig('C:/Users/mw24/github/CEE4530/images/linear')
   plt.show()
 
 ```
 
+Now we will display our figure in Markdown. Here we need to include the file type (png) in the path to the file.
+![linear](C:/Users/mw24/github/CEE4530/images/linear.png)
+
+Figure 1: Captions are very important for figures. Captions go below figures.
+
+
+Equations can be copied directly from the lab manual by clicking on the equation and requesting that it be displayed in Latex. Below is equation 2 from the [Laboratory Manual](https://monroews.github.io/EnvEngLabTextbook/Laboratory_Measurements/Laboratory_Measurements.html)
+
+$$A=\log \left(\frac{P_{o} }{P} \right)$$
+
+
 # Assignment
 
-Find a set of data (or make one up!) that could reasonably be fit with linear regression.
-Save the data to a tab delimited file in your atom project workspace.
-Load the data from the file into a Pandas dataframe.
-Plot the data and the linear regression line.
-Make sure to handle units carefully and to attach units to the linear regression line.
+1) Find a set of data that includes units (or make one up!) that could reasonably be fit with linear regression.
+1) Save the data to a tab delimited file in your atom project workspace.
+1) Load the data from the file into a Pandas dataframe.
+1) Plot the data and the linear regression line.
+1) Make sure to handle units carefully and to attach units to the linear regression line.
+1) Add a figure in Markdown showing the graph you produced.
+1) Show the linear regression equation that you obtained using latex.
