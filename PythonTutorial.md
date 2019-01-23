@@ -76,8 +76,8 @@ See [Selecting Subsets of Data in Pandas](https://medium.com/dunder-data/selecti
 
 ```
 
-Now we will display our figure in Markdown. Here we need to include the file type (png) in the path to the file.
-![linear](C:/Users/mw24/github/CEE4530/images/linear.png)
+Now we will display our figure in Markdown. To have the figure show up for anyone who opens this markdown file we will push the figure to github and then link to it there. To find the link in github, go to the code tab and then browse to the image.
+![linear](https://github.com/monroews/CEE4530/blob/master/images/linear.png)
 
 Figure 1: Captions are very important for figures. Captions go below figures.
 
