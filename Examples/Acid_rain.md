@@ -66,7 +66,25 @@ print('The pH of pure water equilibrium with the atmosphere is',pH_open(0))
 Now let's plot some data
 
 ```Python
-data_file_path=
-lakepH = epa.notes(data_file_path)
+#push the data file to your github and then get the url of the raw file.
+data_file_path='https://raw.githubusercontent.com/monroews/CEE4530/master/Examples/data/Acid_Rain.xls'
+# Use the epa.notes function to find what you've commented in the data file.
+lakepHnotes = epa.notes(data_file_path)
+lakepHnotes
+# set the start index of the data file to one past the note indicating the start.
+start=419
+#The pH data is in column 1
+column=1
+lakepH=epa.column_of_data(data_file_path,start,column)
+#extract the corresponding time data and convert to seconds
+time = epa.column_of_time(data_file_path,start).to(u.s)
+#Now plot the graph
+fig, ax = plt.subplots()
+ax.plot(time,lakepH,'r')
+plt.xlabel('time (s)')
+plt.ylabel('pH')
+#plt.yscale('log')
+plt.savefig('images/pHgraph.png')
+plt.show()
 
 ```
