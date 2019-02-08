@@ -62,3 +62,11 @@ def pH_open(ANC):
 # with the atmosphere
 print('The pH of pure water equilibrium with the atmosphere is',pH_open(0))
 ```
+
+Now let's plot some data
+
+```Python
+data_file_path=
+lakepH = epa.notes(data_file_path)
+
+```
