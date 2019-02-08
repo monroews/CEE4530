@@ -25,7 +25,7 @@ plt.show()
 ```
 
 The alpha terms representing the carbonate species are shown in Figure 1.
- ![graph](https://github.com/monroews/CEE4530/raw/master/images/alphagraph.png)
+ ![graph](https://github.com/monroews/CEE4530/raw/master/Examples/images/alphagraph.png)
 
 Figure 1. Carbonate species relative importance as a function of pH.
 
@@ -40,7 +40,7 @@ plt.savefig('images/ANCgraph.png')
 plt.show()
 ```
 Figure 2 shows the ANC as a function of pH for a system that is in equilibrium with the atmosphere.
- ![graph](https://github.com/monroews/CEE4530/raw/master/images/ANCgraph.png)
+ ![graph](https://github.com/monroews/CEE4530/raw/master/Examples/images/ANCgraph.png)
 
  Figure 2. ANC as a function of pH in a system in equilibrium with the atmosphere.
 
@@ -84,7 +84,8 @@ ax.plot(time,lakepH,'r')
 plt.xlabel('time (s)')
 plt.ylabel('pH')
 #plt.yscale('log')
-plt.savefig('images/pHgraph.png')
+
+plt.savefig('images/pHgraph')
 plt.show()
 
 ```
