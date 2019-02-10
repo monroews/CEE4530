@@ -1,7 +1,6 @@
 
 ```python
 from aguaclara.core.units import unit_registry as u
-u.define('equivalent = mole = eq')
 import aguaclara.research.environmental_processes_analysis as epa
 from scipy import optimize
 import numpy as np
@@ -20,7 +19,7 @@ plt.xlabel('pH')
 plt.ylabel('Fraction of total carbonates')
 plt.legend(['Carbonic acid', 'Bicarbonate', 'carbonate'])
 
-plt.savefig('images/alphagraph.png')
+plt.savefig('Examples/images/alphagraph.png')
 plt.show()
 ```
 
@@ -36,7 +35,7 @@ ax.plot(pH_graph, epa.ANC_open(pH_graph),'r')
 plt.xlabel('pH')
 plt.ylabel('ANC (mole/L)')
 #plt.yscale('log')
-plt.savefig('images/ANCgraph.png')
+plt.savefig('Examples/images/ANCgraph.png')
 plt.show()
 ```
 Figure 2 shows the ANC as a function of pH for a system that is in equilibrium with the atmosphere.
@@ -85,7 +84,11 @@ plt.xlabel('time (s)')
 plt.ylabel('pH')
 #plt.yscale('log')
 
-plt.savefig('images/pHgraph')
+plt.savefig('Examples/images/pHgraph')
 plt.show()
 
 ```
+Figure 3 shows the pH as a function of time in the CMFR lake with acid input.
+ ![graph](https://github.com/monroews/CEE4530/raw/master/Examples/images/pHgraph.png)
+
+ Figure 3. pH as a function of time in the CMFR lake with acid input.
