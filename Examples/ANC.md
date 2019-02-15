@@ -1,6 +1,7 @@
 ```python
 from aguaclara.core.units import unit_registry as u
 import aguaclara.research.environmental_processes_analysis as epa
+import aguaclara.core.utility as ut
 from scipy import optimize
 import numpy as np
 import matplotlib.pyplot as plt
@@ -17,6 +18,8 @@ V_titrant, pH, V_Sample, Normality_Titrant, V_equivalent, ANC = epa.Gran(Gran_da
 ## Equation for the First Gran Function
 $${F_1}  =  \frac{{{V_S} + {V_T}}}{{{V_S}}}{\text{[}}{{\text{H}}^ + }{\text{]}}$$
 
+The ANC can be calculated from the equivalent volume from
+$$ANC=\frac{V_e N_t }{V_s }$$
 ```Python
 #Define the gran function.
 def F1(V_sample,V_titrant,pH):
@@ -31,6 +34,10 @@ slope, intercept, r_value, p_value, std_err = stats.linregress(V_titrant[-N_good
 intercept = intercept*u.mole/u.L
 slope = slope*(u.mole/u.L)/u.mL
 V_eq = -intercept/slope
+ANC_sample = V_eq*Normality_Titrant/V_Sample
+print('The r value for this curve fit is', ut.round_sf(r_value,5))
+print('The equivalent volume was', ut.round_sf(V_eq,2))
+print('The acid neutralizing capacity was',ut.round_sf(ANC_sample.to(u.meq/u.L),2))
 
 #The equivalent volume agrees well with the value calculated by ProCoDA.
 #create an array of points to draw the linear regression line
@@ -47,3 +54,8 @@ plt.savefig('Examples/images/Gran.png')
 plt.show()
 
 ```
+
+The titration of a sample is shown in Figure 1.
+ ![graph](https://github.com/monroews/CEE4530/raw/master/Examples/images/Gran.png)
+
+Figure 1. Gran titration of a sample.
