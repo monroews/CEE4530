@@ -55,7 +55,8 @@ plt.show()
 
 ```
 
-The titration of a sample is shown in Figure 1.
+The Gran titration of a sample is shown in Figure 1.
+
  ![graph](https://github.com/monroews/CEE4530/raw/master/Examples/images/Gran.png)
 
 Figure 1. Gran titration of a sample.
