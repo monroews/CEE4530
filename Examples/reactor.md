@@ -55,16 +55,12 @@ plt.show()
 
 data_file_path = 'https://raw.githubusercontent.com/monroews/CEE4530/master/Examples/data/Dispersion_example.xls'
 firstrow = epa.notes(data_file_path).last_valid_index() + 1
-firstrow = firstrow +10
 time_data = (epa.column_of_time(data_file_path,firstrow,-1)).to(u.s)
 concentration_data = epa.column_of_data(data_file_path,firstrow,1,-1,'mg/L')
-V_CMFR = 1.5*u.L
+V_CMFR = 2.25*u.L
 Q_CMFR = 380 * u.mL/u.min
 theta_guess = (V_CMFR/Q_CMFR).to(u.s)
-theta_guess
-
 C_bar_guess = np.max(concentration_data)/2
-
 #use solver to get the CMFR parameters
 CMFR = epa.Solver_CMFR_N(time_data, concentration_data, theta_guess, C_bar_guess)
 CMFR.C_bar
@@ -78,12 +74,13 @@ CMFR_model = (CMFR.C_bar*epa.E_CMFR_N(time_data/CMFR.theta, CMFR.N)).to(u.mg/u.L
 AD = epa.Solver_AD_Pe(time_data, concentration_data, theta_guess, C_bar_guess)
 AD.C_bar
 AD.Pe
-AD.theta.to(u.min)
+AD.theta
+
 #Create the advection dispersion model curve based on the solver parameters
 AD_model = (AD.C_bar*epa.E_Advective_Dispersion((time_data/AD.theta).to_base_units(), AD.Pe)).to(u.mg/u.L)
 
 #Plot the data and the two model curves.
-plt.plot(time_data.to(u.s), concentration_data.to(u.mg/u.L),'-')
+plt.plot(time_data.to(u.s), concentration_data.to(u.mg/u.L),'r')
 plt.plot(time_data.to(u.s), CMFR_model,'b')
 plt.plot(time_data.to(u.s), AD_model,'g')
 plt.xlabel(r'$time (min)$')
