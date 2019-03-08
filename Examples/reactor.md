@@ -1,13 +1,15 @@
 
 
 ## Steps
-
+# Requires aguaclara 0.0.21 or greater
+pip install aguaclara --upgrade
 ```python
 from aguaclara.core.units import unit_registry as u
 import aguaclara.research.environmental_processes_analysis as epa
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import aguaclara.core.utility as ut
 
 #The following file is from a CMFR
 data_file_path = 'https://raw.githubusercontent.com/monroews/CEE4530/master/Examples/data/CMFR_example.xls'
@@ -27,18 +29,15 @@ Q_CMFR = 380 * u.mL/u.min
 
 #here we set estimates that we will use as starting values for the curve fitting
 theta_guess = (V_CMFR/Q_CMFR).to(u.s)
-
-
-
 C_bar_guess = np.max(concentration_data)
 
 #The Solver_CMFR_N will return the initial tracer concentration, residence time, and number of reactors in series.
 #This experiment was for a single reactor and so we expect N to be 1!
 CMFR = epa.Solver_CMFR_N(time_data, concentration_data, theta_guess, C_bar_guess)
 #use dot notation to get the 3 elements of the tuple that are in CMFR.
-CMFR.C_bar
-CMFR.N
-CMFR.theta
+print('The tracer mass was',ut.round_sf(CMFR.C_bar*V_CMFR,2))
+print('The number of reactors in series was',CMFR.N)
+print('The residence time of the reactor was',ut.round_sf(CMFR.theta,3))
 #create a model curve given the curve fit parameters.
 #
 CMFR_model = CMFR.C_bar * epa.E_CMFR_N(time_data/CMFR.theta,CMFR.N)
@@ -48,7 +47,7 @@ plt.plot(time_data.to(u.min), CMFR_model,'b')
 plt.xlabel(r'$time (min)$')
 plt.ylabel(r'Concentration $\left ( \frac{mg}{L} \right )$')
 plt.legend(['Measured dye','CMFR Model'])
-plt.savefig('Examples/images/reactorplot.png')
+plt.savefig('Examples/images/CMFRplot.png')
 plt.show()
 
 #Load a data file for a reactor with baffles.
@@ -63,9 +62,9 @@ theta_guess = (V_CMFR/Q_CMFR).to(u.s)
 C_bar_guess = np.max(concentration_data)/2
 #use solver to get the CMFR parameters
 CMFR = epa.Solver_CMFR_N(time_data, concentration_data, theta_guess, C_bar_guess)
-CMFR.C_bar
-CMFR.N
-CMFR.theta.to(u.s)
+print('The tracer mass estimated by CMFR in series was',ut.round_sf(CMFR.C_bar*V_CMFR,2))
+print('The number of reactors in series was',CMFR.N)
+print('The residence time of the reactor was',ut.round_sf(CMFR.theta,3))
 #Create the CMFR model curve based on the solver parameters
 #We do this with dimensions so that we can plot both models and the data on the same graph. If we did this in dimensionless it wouldn't be possible to plot everything on the same plot because the values used to create dimensionless time and dimensionless concentration are different for the two models.
 CMFR_model = (CMFR.C_bar*epa.E_CMFR_N(time_data/CMFR.theta, CMFR.N)).to(u.mg/u.L)
@@ -75,7 +74,9 @@ AD = epa.Solver_AD_Pe(time_data, concentration_data, theta_guess, C_bar_guess)
 AD.C_bar
 AD.Pe
 AD.theta
-
+print('The tracer mass estimated by the advection dispersion model was',ut.round_sf(AD.C_bar*V_CMFR,2))
+print('The Peclet number was',ut.round_sf(AD.Pe,2))
+print('The residence time estimated by the advection dispersion model was',ut.round_sf(AD.theta,3))
 #Create the advection dispersion model curve based on the solver parameters
 AD_model = (AD.C_bar*epa.E_Advective_Dispersion((time_data/AD.theta).to_base_units(), AD.Pe)).to(u.mg/u.L)
 
@@ -86,8 +87,14 @@ plt.plot(time_data.to(u.s), AD_model,'g')
 plt.xlabel(r'$time (min)$')
 plt.ylabel(r'Concentration $\left ( \frac{mg}{L} \right )$')
 plt.legend(['Measured dye','CMFR Model', 'AD Model'])
-plt.savefig('Examples/images/reactorplot.png')
+plt.savefig('Examples/images/ADplot.png')
 plt.show()
 
 ```
-![graph](images/reactorplot.png)
+![graph](https://github.com/monroews/CEE4530/raw/master/Examples/images/CMFRplot.png)
+
+CMFR model and data
+
+![graph](https://github.com/monroews/CEE4530/raw/master/Examples/images/ADplot.png)
+
+Data from reactor with one baffle modeled as CMFR and as advection dispersion.
