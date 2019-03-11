@@ -2,10 +2,11 @@
 ```python
 from aguaclara.core.units import unit_registry as u
 import aguaclara.research.environmental_processes_analysis as epa
+import aguaclara.core.utility as ut
 from scipy import optimize
 import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
+
 
 
 ```
@@ -71,7 +72,9 @@ data_file_path='https://raw.githubusercontent.com/monroews/CEE4530/master/Exampl
 lakepHnotes = epa.notes(data_file_path)
 lakepHnotes
 # set the start index of the data file to one past the note indicating the start.
-start=419
+#The following code finds the index of the last note in the data file.
+start=epa.notes(data_file_path).last_valid_index() + 1
+start
 #The pH data is in column 1
 column=1
 lakepH=epa.column_of_data(data_file_path,start,column)
