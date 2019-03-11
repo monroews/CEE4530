@@ -20,7 +20,7 @@ epa.notes(CMFR_path)
 CMFR_firstrow = epa.notes(CMFR_path).last_valid_index() + 1
 CMFR_firstrow
 
-#I eliminate the beginning of the data file because this is a CMFR and the first data was taken before the dye reached the sensor. Note that eliminating some data from the beginning of the data file will not change the analysis except in the estimate of the initial tracer mass.
+"""I eliminate the beginning of the data file because this is a CMFR and the first data was taken before the dye reached the sensor. Note that eliminating some data from the beginning of the data file will not change the analysis except in the estimate of the initial tracer mass."""
 CMFR_firstrow = CMFR_firstrow + 10
 
 
