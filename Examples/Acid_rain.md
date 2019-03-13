@@ -20,7 +20,7 @@ plt.xlabel('pH')
 plt.ylabel('Fraction of total carbonates')
 plt.legend(['Carbonic acid', 'Bicarbonate', 'carbonate'])
 
-plt.savefig('Examples/images/alphagraph.png')
+plt.savefig('Examples/images/alphagraph.png', bbox_inches = 'tight')
 plt.show()
 ```
 
@@ -36,7 +36,7 @@ ax.plot(pH_graph, epa.ANC_open(pH_graph),'r')
 plt.xlabel('pH')
 plt.ylabel('ANC (mole/L)')
 #plt.yscale('log')
-plt.savefig('Examples/images/ANCgraph.png')
+plt.savefig('Examples/images/ANCgraph.png', bbox_inches = 'tight')
 plt.show()
 ```
 Figure 2 shows the ANC as a function of pH for a system that is in equilibrium with the atmosphere.
@@ -87,7 +87,7 @@ plt.xlabel('time (s)')
 plt.ylabel('pH')
 #plt.yscale('log')
 
-plt.savefig('Examples/images/pHgraph')
+plt.savefig('Examples/images/pHgraph', bbox_inches = 'tight')
 plt.show()
 
 ```

@@ -50,7 +50,7 @@ plt.xlabel('Titrant Volume (mL)')
 plt.ylabel('Gran function (mole/L)')
 plt.legend(['data'])
 
-plt.savefig('Examples/images/Gran.png')
+plt.savefig('Examples/images/Gran.png', bbox_inches = 'tight')
 plt.show()
 
 ```

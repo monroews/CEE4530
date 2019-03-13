@@ -60,7 +60,7 @@ plt.plot(CMFR_time_data.to(u.min), CMFR_CMFR_model,'b')
 plt.xlabel(r'$time (min)$')
 plt.ylabel(r'Concentration $\left ( \frac{mg}{L} \right )$')
 plt.legend(['Measured dye','CMFR Model'])
-plt.savefig('Examples/images/CMFR.png')
+plt.savefig('Examples/images/CMFR.png', bbox_inches = 'tight')
 plt.show()
 
 #Load a data file for a reactor with baffles.
@@ -118,7 +118,7 @@ plt.plot(one_baffle_time_data.to(u.s), one_baffle_AD_model,'g')
 plt.xlabel(r'$time (min)$')
 plt.ylabel(r'Concentration $\left ( \frac{mg}{L} \right )$')
 plt.legend(['Measured dye','CMFR Model', 'AD Model'])
-plt.savefig('Examples/images/Dispersion.png')
+plt.savefig('Examples/images/Dispersion.png', bbox_inches = 'tight')
 plt.show()
 
 ```
