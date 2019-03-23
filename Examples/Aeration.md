@@ -19,10 +19,10 @@ filepaths, airflows, DO_data, time_data = epa.aeration_data(DO_column,dirpath)
 # Plot the raw data
 
 for i in range(airflows.size):
-  plt.plot(time_data[i], DO_data[i],'-')
-plt.xlabel(r'$time (s)$')
-plt.ylabel(r'Oxygen concentration $\left ( \frac{mg}{L} \right )$')
-plt.legend(airflows.magnitude)
+  plt.plot(time_data[i], DO_data[i],'-');
+plt.xlabel(r'$time (s)$');
+plt.ylabel(r'Oxygen concentration $\left ( \frac{mg}{L} \right )$');
+plt.legend(airflows.magnitude);
 plt.show()
 
 #delete data that is less than 2 or greater than 6 mg/L
