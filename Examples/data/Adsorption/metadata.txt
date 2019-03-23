@@ -8,7 +8,6 @@ file name	carbon (g)	flow (mL/s)
 1_66gac0_5mlpers.xls	1.66	0.5
 2gac0_466mLpers.xls	2	0.466
 4gac0_466mLpers.xls	4	0.466
-13_8gac0_6mLpers.xls	13.8	0.6
 13_8gac2_6mLpers.xls	13.8	2.6
 15gac0_5mLpers.xls	15	0.5
 15_63gac2_6mLpers.xls	15.63	2.6

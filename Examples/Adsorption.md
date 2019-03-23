@@ -49,8 +49,8 @@ def adsorption_data(C_column, dirpath):
     filepaths = [dirpath + '/' + i for i in filenames]
     #DO_data is a list of numpy arrays. Thus each of the numpy data arrays can have different lengths to accommodate short and long experiments
     # cycle through all of the files and extract the column of data with oxygen concentrations and the times
-    C_data=[epa.column_of_data(i,epa.notes(i).last_valid_index() + 1,C_column,-1,'mg/L') for i in filepaths]
-    time_data=[(epa.column_of_time(i,epa.notes(i).last_valid_index() + 1,-1)).to(u.s) for i in filepaths]
+    C_data=[epa.column_of_data(i,epa.notes(i).last_valid_index() + 1,C_column,-1,'mg/L') for i in filenames]
+    time_data=[(epa.column_of_time(i,epa.notes(i).last_valid_index() + 1,-1)).to(u.s) for i in filenames]
 
     adsorption_collection = collections.namedtuple('adsorption_results','metadata filenames C_data time_data')
     adsorption_results = adsorption_collection(metadata, filenames, C_data, time_data)
@@ -61,21 +61,28 @@ C_column = 1
 dirpath = "https://raw.githubusercontent.com/monroews/CEE4530/master/Examples/data/Adsorption"
 
 metadata, filenames, C_data, time_data = adsorption_data(C_column,dirpath)
+metadata
 Column_D = 1 * u.inch
 Column_A = pc.area_circle(Column_D)
 Column_L = 15.2 * u.cm
 Column_V = Column_A * Column_L
 Tubing_V = 60 * u.mL
-Tubing_HRT = Tubing_V/Q
+Flow_rate = ([metadata['flow (mL/s)'][i] for i in metadata.index])* u.mL/u.s
+Mass_carbon= ([metadata['carbon (g)'][i] for i in metadata.index])* u.g
+Tubing_HRT = Tubing_V/Flow_rate
 porosity = 0.4
 C_0 = 50 * u.mg/u.L
-metadata
-Q = ([metadata['flow (mL/s)'][i] for i in metadata.index])* u.mL/u.s
-HRT = (porosity * Column_V/Q).to(u.s)
+
+HRT = (porosity * Column_V/Flow_rate).to(u.s)
+
+#zero the concentration data by subtracting the value of the first data point from all data points. Do this in each data set.
+for i in range(np.size(filenames)):
+  C_data[i]=C_data[i]-C_data[i][0]
+
 
 
 mylegend = np.zeros(0)
-for i in range(np.size(filepaths)):
+for i in range(np.size(filenames)):
   if (metadata['carbon (g)'][i] == 0):
     plt.plot(time_data[i]/HRT[i] - Tubing_HRT[i]/HRT[i], C_data[i]/C_0,'-');
     mylegend = np.append(mylegend,metadata['flow (mL/s)'][i])
@@ -87,21 +94,38 @@ plt.legend(mylegend);
 plt.show()
 
 mylegend = np.zeros(0)
-for i in range(np.size(filepaths)):
+for i in range(np.size(filenames)):
   if (metadata['carbon (g)'][i] != 0):
     plt.plot(time_data[i]/HRT[i] - Tubing_HRT[i]/HRT[i], C_data[i]/C_0,'-');
     mylegend = np.append(mylegend,metadata['carbon (g)'][i])
 
 plt.xlabel(r'$\frac{t}{\theta}$');
-plt.xlim(right=30,left=0);
+plt.xlim(right=100,left=0);
 plt.ylabel(r'Red dye concentration $\left ( \frac{mg}{L} \right )$');
 plt.legend(mylegend);
 plt.show()
 
 #Experiment characteristics
+idx = (np.abs(C_data[0]-C_0/2)).argmin()
+idx
+time_data[0][idx]
+t_breakthrough = np.zeros(0)*u.s
+for i in range(np.size(filenames)):
+  idx = (np.abs(C_data[i]-C_0/2)).argmin()
+  t_breakthrough[i] = time_data[i][idx]
 
-Column_Q = 0.5 * u.mL/u.s
-v_a = (Column_Q/Column_A).to(u.mm/u.s)
+
+
+def Breakthrough(filepath,C_column,C_0):
+  firstrow = epa.notes(filepath).last_valid_index() + 1
+  C = epa.column_of_data(filepath,firstrow,C_column,-1,'mg/L')
+  t = (epa.column_of_time(filepath,firstrow,-1)).to(u.s)
+  idx = (np.abs(C-C_0/2)).argmin()
+  t_breakthrough = t[idx]
+  plt.plot(t, C,'-');
+  return t_breakthrough
+
+
 
 Carbon_density = 2.1 * u.g/u.cm**3
 Sand_porosity = 0.4
