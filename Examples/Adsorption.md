@@ -86,27 +86,36 @@ for i in range(np.size(filenames)):
 
 
 #Create a graph of the columns that didn't have any activated carbon
-mylegend = np.zeros(0)
+mylegend = []
 for i in range(np.size(filenames)):
   if (metadata['carbon (g)'][i] == 0):
     plt.plot(time_data[i]/HRT[i] - Tubing_HRT[i]/HRT[i], C_data[i]/C_0,'-');
-    mylegend = np.append(mylegend,metadata['flow (mL/s)'][i])
+    mylegend.append(str(metadata['flow (mL/s)'][i]) + ' mL/s')
 
 plt.xlabel(r'$\frac{t}{\theta}$');
 plt.xlim(right=3,left=0);
 plt.ylabel(r'Red dye concentration $\left ( \frac{mg}{L} \right )$');
 plt.legend(mylegend);
+plt.savefig('Examples/images/Sand_column')
 plt.show()
 
 # create a graph of the columns that had different masses of activated carbon. Note that this includes systems with different flow rates!
-mylegend = np.zeros(0)
+mylegend =[]
 for i in range(np.size(filenames)):
   if (metadata['carbon (g)'][i] != 0):
     plt.plot(time_data[i]/HRT[i] - Tubing_HRT[i]/HRT[i], C_data[i]/C_0,'-');
-    mylegend = np.append(mylegend,metadata['carbon (g)'][i])
+    mylegend.append(str(metadata['carbon (g)'][i]) + ' mg/L')
 
 plt.xlabel(r'$\frac{t}{\theta}$');
 plt.xlim(right=100,left=0);
 plt.ylabel(r'Red dye concentration $\left ( \frac{mg}{L} \right )$');
 plt.legend(mylegend);
+plt.savefig('Examples/images/Activated_carbon')
 plt.show()
+```
+
+The tracer curve for the columns without carbon is shown below.
+
+ ![graph](https://github.com/monroews/CEE4530/raw/master/Examples/images/Gran.png)
+
+Figure 1. Gran titration of a sample.
