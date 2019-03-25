@@ -104,7 +104,7 @@ mylegend =[]
 for i in range(np.size(filenames)):
   if (metadata['carbon (g)'][i] != 0):
     plt.plot(time_data[i]/HRT[i] - Tubing_HRT[i]/HRT[i], C_data[i]/C_0,'-');
-    mylegend.append(str(metadata['carbon (g)'][i]) + ' mg/L')
+    mylegend.append(str(ut.round_sf(metadata['carbon (g)'][i],3)) + ' g, ' + str(ut.round_sf(metadata['flow (mL/s)'][i],2)) + ' mL/s')
 
 plt.xlabel(r'$\frac{t}{\theta}$');
 plt.xlim(right=100,left=0);
@@ -114,8 +114,12 @@ plt.savefig('Examples/images/Activated_carbon')
 plt.show()
 ```
 
-The tracer curve for the columns without carbon is shown below.
+The tracer curves for the columns without carbon is shown below.
 
- ![graph](https://github.com/monroews/CEE4530/raw/master/Examples/images/Gran.png)
+ ![graph](https://github.com/monroews/CEE4530/raw/master/Examples/images/Sand_column.png)
 
-Figure 1. Gran titration of a sample.
+Figure 1. Tracer curves for sand columns at two different flow rates. It is likely that different setups had different amounts of tubing volume that influenced how long it took for the tracer to reach the detector.
+
+ ![graph](https://github.com/monroews/CEE4530/raw/master/Examples/images/Activated_carbon.png)
+
+ Figure 2. Tracer curves for columns with different masses of activated carbon.
