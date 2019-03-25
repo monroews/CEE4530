@@ -1,0 +1,115 @@
+# BOD and Nitrate Removal in a Sequencing Batch Reactor
+CEE 4530 Group 7  
+Sophia He, Lucinda Li, Aaron Reynolds
+
+# Background and Introduction
+
+Wastewater treatment is a multi-step process that minimizes any harmful effects on the environment when it is returned to the water cycle or after more extensive treatment, can be reused directly for other purposes.
+
+One of the primary goals of wastewater treatment is BOD (biological oxygen demand) removal. BOD is a measure of how much oxygen will be consumed by the organic matter in the wastewater. If not properly removed, BOD will use up DO (dissolved oxygen) in the body of water that it is released into and prevent its aquatic organisms from thriving (Figure 1). The BOD removal process is typically performed via aerobic digestion, where a mixed culture sludge in a continuous flow reactor is supplied oxygen for respiration of the organic matter; aeration into the reactor is necessary. However, this is very expensive. A better alternative may be anaerobic digestion, but unfortunately, many wastewater treatment plants were equipped with aerobic digestion when they were first built decades ago and continue to use it. Another goal for treatment is nutrient removal. There are two main nutrients that are primarily targeted in nutrient removal, nitrogen and phosphorus. Both are main contributors to eutrophication and algal blooms.
+
+![](7_images/BOD_Diagram.png)
+Figure 1: BOD in an ecosystem
+
+When nitrogen-high wastewater is discharged into nearby bodies of water, the excess of nutrients can cause a multitude of environmental concerns. Due to an increase in nitrogen availability, algae and other aquatic plants will grow much more rapidly and deplete the system’s dissolved oxygen. The anoxic conditions cause coastal dead zones where the DO concentration is too low to support aquatic life (Figure 2). The impacts of these dead zones include fish kills, migratory routes being blocked by algae masses, loss of diverse ocean ecosystems, and agribusiness. The “Dead Zone” in the Gulf of Mexico is an example of poor nutrient removal from nonpoint sources entering the gulf. It is a 7,000 square mile zone that cannot sustain most marine life.
+
+![](7_images/eutrophication.png)
+Figure 2: Eutrophication
+
+This nitrogen influx into our water systems come from human activity including the industry, municipal wastewater treatment, agriculture, fertilize, and livestock manure. A major component of the nitrogen reduction plan includes the need for wastewater treatment upgrades that emphasize nitrogen removal. It is often left as a tertiary treatment process, not necessary for every wastewater treatment plant. To remove available nitrogen from the wastewater effluent, nitrification will convert ammonia to nitrate and denitrification will convert nitrate to nitrogen gas. Denitrification works under low oxygen conditions to transform nitrate into nitrogen gas, N2. Genes to reduce nitrogen to N2 will be repressed if DO concentrations exceed 2.5-5 mg/L. In a conventional wastewater treatment plant, an automated process to bring the oxygen concentration from very high for aerobic digestion to very low for denitrification will make plants much more efficient. There are also other alternatives that use the organic matter from the wastewater influent as electron donors for denitrification allowing the order of the aeration and oxygen depletion stages to vary.
+
+# Objectives
+
+Our objective was to design a reactor to remove BOD and nitrogen that is automated by ProCoDA. We decided to implement a bench-scale sequencing batch reactor, as it was easy to set up, had no flow in and out, and allowed for automating aerobic and anoxic cycles to remove BOD and nitrogen. There were two main cycles for the batch reactor to cycle between: aerobic and anoxic. We hoped that nitrification and aerobic digestion would occur during the aerobic cycle and denitrification to occur during the anoxic cycle. During aerobic digestion, the sludge consumes BOD that is in the waste. When BOD is mostly consumed, nitrification occurs to convert ammonium into nitrate. However, we did not want all the BOD removed because denitrification requires it. The challenge for us was to determine when it was optimal to switch from aerobic to anoxic conditions for the maximum BOD and nitrogen removal. Thus, in the sequencing batch reactor, there were alternating cycles of aerobic and anoxic to remove all TKN to nitrate, then N2 gas and BOD (Figure 3).
+
+![](7_images/BatchReactor.png)
+Figure 3: Cycling through a sequencing batch reactor
+
+In a study done at Daejeon Development Institute, a bench-scale sequencing batch reactor was assembled to look at how different aerobic and anoxic cycle times affect nitrate removal. The researchers found that optimal nitrate removal occurred at a total anoxic time of 130 minutes in the reactor, so one of our first challenges was to replicate the experiment. They did a total of four, six hour runs, with different anoxic times, listed in the table below. Run 4 is the one we aimed to replicate (Figure 4).
+
+![](7_images/PictureFromPaper.png)
+Figure 4: Sequencing batch reactor runs by Deajeon Development Institute
+
+They determined their cycle times after finding their nitrate consumption rate in the reactor. However, due to time and resource constraint, we could not understand our reactor as well. Instead, we decided to look at the relationship between time and BOD remaining as well as the one between BOD remaining and nitrate production. With this knowledge, we intended to determine cycle times for each aerobic and anoxic cycle, hoping to achieve optimal nitrate and BOD removal. To compare our sequencing batch reactor experiments with the ones from the paper, we decided to maintain the first 50 minute anoxic cycle, the last 40 minute aerobic cycle, and a total run time of six hours including a one hour settling time. The last 40 minute aerobic cycle is important for any TKN to be nitrified to nitrate for analysis as the only form of nitrogen we are measuring is nitrate.
+
+# Procedure
+
+For the sake of convenience, a single sequencing batch reactor with multiple different stages was used. The batch reactor was designed to convert BOD into CO2 through aerobic digestion while converting all TKN to NO3. Following this, anoxic conditions were introduced in the batch reactor in order to convert NO3 into N2. Finally, an aeration process was used with the intention of converting all remaining NH4 to NO3 in order to allow for it to be converted to N2. This final process was dependent on the amount of BOD remaining in the reactor (Figure 5).
+
+![](7_images/AerobicAnoxic.png)
+Figure 5: Processes occurring in the aerobic and anoxic cycles
+
+In order to facilitate the change between different states, ProCoDa used data from pressure sensors, as well as the DO probe to automate the entire process. For the purposes of this experiment, five states constituted one full cycle : addition of concentrated waste, aeration for aerobic digestion, anoxic denitrification, aeration, and the discharge of a clean supernatant.
+
+The apparatus used for conducting this experiment consisted of a 1 L open reactor tank, an air diffuser, multiple solenoid valves, and a DO probe (Figure 6). The reactor was filled with a mixture of aerobic and anaerobic sludge from the activated sludge tank of the Ithaca wastewater treatment plant. Aerobic sludge contains nitrifiers that perform nitrification and bacteria that digests BOD, while anaerobic sludge contains denitrifiers, which only perform denitrification under very low oxygen conditions.
+
+![](7_images/ReactorSchematic.png)
+Figure 6: Schematic of Reactor
+
+## Experiment 1: BOD Removal and Nitrate Production
+
+The first experiment involved cycling between aerobic and anaerobic states at equal intervals. The goal of this experiment was to measure the BOD removal as a function of time. We also wanted to see if any nitrate was produced.
+
+To begin, a 1/100 dilution of concentrated chemical waste was pumped into the reactor tank. While the waste was initially stored in a refrigerator, it was left out at room temperature for several minutes before being pumped into the tank. This allowed for it to reach the necessary temperature. A pressure sensor attached to one of the effluent ports of the tank fed data to ProCoDa. When the water level in the reactor had reached the proper height, measured to keep the reactor at a volume of 0.6 L, the pumping was automatically stopped.
+
+After the reactor was filled, an automated aeration process began. The aeration was prepared identical to the Gas Transfer lab, by preparing the apparatus for calibration and calibrating the DO probe. We found that the air slope rate to be 0.0074, which gave us an air flow of 278 mmol/s, less than 20% different than the target of 250 mmol/s.
+
+Aeration continued for 30 minutes. This time was chosen as a good checkpoint to monitor BOD removal. After 30 minutes, ProCoDa automatically stopped the aeration process. We then waited roughly five minutes to allow for the sludge, which had been stirred into the main solution of the reactor to settle. Following this, the nitrate testing procedure was performed.
+
+We used a lowtech and cheap test to determine nitrate concentration. 5 mL of the solution in the reactor was drawn using a pipette and placed into small test tubes. Two different pills were then added at specific time intervals. The first pill was called Nitrate-1 and was added directly to the test tube. After the addition, the test tube was stirred manually for roughly two minutes. The test tube was then placed inside a sleeve to block out light and a second pill called Nitrate-2 was added. After stirring the solution for an additional two minutes, it was left to settle for five minutes. Following this, the solution was placed inside a handheld device and the color was compared to a color chart directly next to it. The nitrate concentration corresponded to a specific color on the chart (Figure 7).
+
+![](7_images/NitrateTestKit.png)
+Figure 7: Nitrate Test Kit
+
+While the nitrate testing process was happening, the DO concentration in the reactor was slowly decreasing due to the BOD in the reactor and a lack of aeration. The idea is that once aeration stops, the sludge will consume more organic matter, using up any remaining oxygen in the reactor. Once the DO concentration fell below 5 mg/L, the aeration process automatically started again. This reduction in DO was intended to give us a slope of DO consumption vs time. This cycle was repeated eight times. To automate the cycling, we used the counter function in ProCoDA which allows ProCoDA to add to a counter when it goes to the aeration state and end when the counter reaches eight. At the end of each aeration the nitrate testing process would be repeated.
+
+It should be noted that during the entire cycle, the DO concentration in the reactor was being measured and recorded by the DO probe linked to ProCoDa. Then we used Excel to plot DO concentration versus time to find where the aeration stopped. For the duration of each of the “Stop Aeration” states, we found the slope of DO consumption. Integrating this slope with time allowed us to determine how much BOD remained in the reactor at any time point (Figure 8).
+
+![](7_images/TotalBODRemoved.png)
+Figure 8: DO consumption rate and BOD remaining with times
+
+Our rationale was that by measuring BOD remaining at each time point, we can determine how long the cycles should be. If we know how much BOD remains at each time and we know how much nitrate we want consumed, we can find how much oxygen we need, so we know how long we should run each cycle.
+
+## Experiment 2: BOD and nitrogen removal in a sequencing batch reactor
+The second set of experiments used ProCoDA to define certain time intervals to cycle between aerobic and anoxic cycles according to the paper (Figure 3). We defined multiple states for ProCoDA to cycle through: Anoxic I, Aerobic I, Anoxic II, Aerobic II, settle, and draw effluent. We filled up the reactor as we did in experiment 1. Then the reactor went into Anoxic I for 50 minutes. The cycles continued as dictated in the paper. When it was time to draw the effluent, ProCoDA was set up to open a solenoid valve connecting the reactor to the waste bucket to draw effluent out by gravity-powered suction. ProCoDA turned to off when the pressure sensor used to measure water level measured approximately 4 cm, the height of the sludge. Before an experiment started, we tested the initial nitrate concentration with the kit. We repeated the same process for the effluent at the end of the experiment.
+
+# Results and Discussion of Challenges and Difficulties
+
+When we performed our BOD-slope experiment, we found that there was negligible BOD removal in the reactor. Once aeration stops, the sludge uses up oxygen, and thus consumption should be measurable by observing the slope. As can be seen in figure 9, we saw negligible change in slope, indicating that BOD remaining was relatively similar. To remedy this, we added more aerobic sludge.
+
+![](7_images/DOvsTimeExperiment1.png)
+Figure 9: DO data from experiment 1
+
+During this experiment, there was also negligible nitrification in the reactor, as shown by figure 10, illustrating nitrate concentration taken at different time points during the experiment. These results may have been attributed to a number of causes. First, the nitrate-nitrogen concentration was difficult to measure; turbid water affects color, and because the nitrate tablets used a color-based measurement scale, the results may have been offset by the original color of the water. Further, because of this color scale, the nitrate tablets themselves were not very accurate. The nitrate tablets measured nitrate on a scale of 0, 1, 2, 4, 6, 8, 10, 15 ppm (the equivalent of 1 mg/L), on a color scale ranging from pale yellow to deep red, which was difficult to observe in certain lighting, given the imprecise scale. We chose this measurement system on a three-week time constraint, and given our time constraint, the feasible method to measure nitrate that we settled on was faulty.
+
+![](7_images/NitrateResults.png)
+Figure 10: Table of nitrate-nitrogen concentrations every 30 minutes during experiment 1
+
+After further discussion with the course instructor on this issue of failing to observe nitrification, we realized that the chemical waste that was prepared was done so using deionized (DI) water. Since DI water possesses little to none of the ANC required for nitrification to occur, there was negligible nitrification in our reactor.  Therefore, we prepared the dilution of the chemical waste solution using tap water, which had the ANC necessary for nitrification. Following, we decided to add a known sodium nitrate concentration directly to the reactor to observe and compare denitrification for DI water and tap water.
+
+Our results for our sequencing batch reactor experiments showed that when nitrate removal of a waste stock prepared with tap water was compared to one prepared with DI water, it appeared as though more nitrate was removed from the waste stock prepared with DI water.
+
+![](7_images/TapWatervsDI.png)
+Figure 11: Nitrate concentration of the influent and effluent of two sequencing batch reactor experiments
+
+Figure 11 shows a greater color difference in nitrate-nitrogen concentration when comparing before and after the experiment prepared with DI water. This indicates that a large amount of nitrate was removed as the observed samples decreased from greater than 15 mg/L (t = 0 h) to 2-4 mg/L (t = 6 h). While the experiment with waste stock prepared with tap water also showed nitrate removal, the difference was less apparent. The nitrate concentration decreased from greater than 15 mg/L (t = 0 h) to 6-8 mg/L (t = 6 h).  Although these results may suggest that more nitrate removal occurred overall in the DI water solution, it is important to consider the effect that the higher ANC of the tap water had. This higher ANC allowed for more nitrate production to occur in the solution during periods of aeration. Thus, while the difference between the initial and final nitrate concentration in the tap water solution appears smaller than that of DI water, in reality the extra generation of nitrate caused by the tap water may have skewed the results. These results support our hypothesis that nitrification did not occur in experiment 1 because there was insufficient ANC.
+
+Though we aptly proved that nitrate was removed, our results failed to show that during the sequencing batch experiment modeled after Lee et al’s experiment that substantial BOD removal occurred. As in experiment 1, we did not see the DO consumption rate change from Anoxic I to Anoxic II, and even during settling when aeration stopped (Figure 12).
+
+![](7_images/DOvsTimeExperiment2.png)
+Figure 12: DO vs time for experiment 2
+
+
+We experienced other minor difficulties. Bubbles on the DO probe created varying DO readings. Sludge was drawn out from the reactor due to the nature of the reactor’s small size. Aeration also caused the sludge to mix with the waste stock and when effluent was drawn out, sludge was too. Additionally, we experienced a technical difficulty in which our ProCoDA method file was erased, setting us back in our experiments.
+
+
+# Conclusion and Future Steps
+Overall, our experimental setup and procedure did not prove as successful as we had hoped. We saw a negligible amount of both BOD removal and nitrate production in the reactor during the aerobic phases. However, we did see that the reactor proved successful in removing nitrate after adding the nitrate directly to the chemical waste.
+
+There are several steps we could take in the future in order to improve upon our experiment and hopefully see better results. Firstly, we could explore a range of time intervals for the aerobic phase. Since we saw very little to no BOD removal using 30 minute cycles, it would seem logical to perform longer cycles to hopefully observe a measurable amount of BOD removal. Given more time, we would also be able to see how adding more aerobic sludge might help with BOD removal. Additionally, we could have used a more advanced form of nitrate detection. If we had used a device such as a spectrophotometer we could have achieved a far more accurate reading of the nitrate concentration at the end of each aerobic cycle. With a more accurate reading we may have been able to observe a trend in the nitrate production over time. Finally, we could have performed the experiment under much finer controls. For instance we could have tried to control the pH and temperature, as well as ensuring that our chemical waste had a high enough ANC to allow for noticeable nitrification to occur.
+
+If we were able to improve the experiment using the above methods, we could potentially set up a cycle that achieves our original goal of optimizing the cyclic removal of BOD and nitrate in wastewater.
+
+# References
+
+Lee, J., Lee, K., & Yim, S. (2007). Optimization of nitrogen removal in a sequencing batch reactor system by variation of the time distribution. Journal of Environmental Science and Health, Part A,42(11), 1655-1663. doi:10.1080/10934520701518182
