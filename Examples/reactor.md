@@ -1,6 +1,12 @@
 Make sure you are using aguaclara version 0.0.22 or greater!
 pip install aguaclara --upgrade
 
+#issues to improve
+
+* devise an equation to estimate required tracer mass based on estimated N or Pe.
+* Devise a better method to estimate tstar. I think it should be based on the theta that is calculated from flow and reactor volume. THis requires that we have a good method of creating an F curve without having all of the data. I think the F curve should be made from the best fit E curve rather than from the raw data. This will eliminate the error of not knowing exactly what the mass of added tracer is.
+* Devise a method to test for dead volume or short circuiting (same thing). Is this simply a comparison of theta from V/Q with tbar from the E curve fit?
+
 # Reactor analysis
 
 We would like to understand the mixing characteristics of the various reactors that we are designing and building. The parameters that describe the reactors are the number of CMFRs in series or the Peclet number and the ratio of the hydraulic residence time to the tracer residence time. We will use scipy.optimize curve_fit to minimize the error between our two reactor models (CMFR in series and advection/dispersion) and the tracer data that we collect.
