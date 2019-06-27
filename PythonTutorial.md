@@ -1,8 +1,97 @@
-# Python Tutorial for CEE 4530
+# Python Tutorial for CEE 3530
 
 This tutorial assumes that you have already installed atom on your computer, that you've configured it to be able to use python, and that you've installed the AguaClara code. The goal of this tutorial is to help you learn some of the essential tools for data analysis and presentation that you will need throughout the semester.
 
-For a more detailed tutorial see the [python tutorial](https://aguaclara.github.io/Textbook/Introduction/Python_Tutorial.html) used for CEE 4520.
+For a more detailed tutorial see the [python tutorial](https://aguaclara.github.io/Textbook/Introduction/Python_Tutorial.html) used for CEE 3520.
+
+# Python Basics
+
+## Common Import Statements
+```Python
+from aguaclara.core.units import unit_registry as u
+import aguaclara.research.environmental_processes_analysis as epa
+import aguaclara.core.utility as ut
+import aguaclara.core.physchem as pc
+import numpy as np
+import matplotlib.pyplot as plt
+import collections
+import os
+from pathlib import Path
+import pandas as pd
+import math
+```
+
+There are many functions which have already been coded out that you can find here: https://github.com/AguaClara/aguaclara/tree/master/aguaclara. Instead of copying and pasting the code into your markdown file, you can call the function directly from the AguaClara repository.
+
+### Example 1: Calling an AguaClara Function
+For example, if you want to calculate the density of water at a given temperature, you can use the function "density_water()" located in physchem under the core AguaClara folder.
+
+**Warning** some functions specify which units its inputs must be in. For example, for the density function, if you don't append units to the input variable it will assume that the input is in Kelvins which would give you an incorrect answer if the input was intended to be in Celsius. However, if you add the unit Celsius to your input, the function will automatically convert this value to Kelvins which will give you the correct answer.
+
+```Python
+import aguaclara.core.physchem as pc
+temp = 20*(u.degC)
+density = pc.density_water(temp)
+print('The density of water at 20 degrees Celsius is', ut.round_sf(density,3), '.') # The density of water at 20 degrees Celsius is 998 kilogram / meter ** 3.
+```
+
+## Units
+The AguaClara code handles units which is extremely helpful in preventing unit errors, but it can cause some coding headaches.
+
+Functions **will not** automatically convert units so that its variables have compatible units. For example, if you try to multiply two things which have different units, your code will either work but give you incorrect units (most likely it will give you the two units multiplied together) or the code will simply give you an error. You should either make sure ahead of time that your variables have the same units, or use the function "to_base_units()" which will convert your input units to the most simple unifying base unit.
+
+### Example 2: Units
+```Python
+# adding units
+temp = 10*(u.degC)
+area = 20*(u.m**2)
+density = 30*(u.kg/u.m**3)
+# removing units
+temp = temp.magnitude
+# changing units
+area =  area.to(u.cm**2)
+# making units compatible
+length = 40*(u.m)
+width = 50*(u.cm)
+# unit error example
+area = length*width
+area # 2000 centimeter meter (not what we want)
+# correct answer
+area = (length*width).to_base_units()
+area # 20.0 meter^2
+```
+
+## Plotting Data
+When plotting, make sure that the arrays you are planning on plotting against one another are the same length and dimension. To do the former you can use the function 'len()'.
+
+### Example 3: Plotting
+```Python
+x = [1,2,3,4]
+y = [1,2,3,4]
+plt.plot(x, y, 'o')
+plt.plot(x, y, '-')
+plt.xlabel('Time (s)')
+plt.ylabel('pH (dimensionless)');
+plt.title('pH vs Time')
+plt.show()
+```
+
+## For Loops
+If you need to run the same function for a variety of inputs, you can save yourself some time with a for loop. The most common errors that result from for loops are a result of unit errors. If you add the appropriate expected units to the empty array which will contain your answers, you shouldn't have any unit errors. However, as a last resort, you can use ".magnitude" inside your for loop so that it will run without any errors then append the appropriate units outside of the for loop.
+
+### Example 4: For Loop (Calculating Density + Plotting Results)
+```Python
+temp = [20, 40, 60, 80]*(u.degC)
+density = np.zeros(4)*(u.kg/u.m**3) # add the expected outcome units to the new array to prevent unit errors
+for i in range(temp.size):
+  density[i] = pc.density_water(temp[i])
+
+plt.plot(temp, density, 'o')
+plt.xlabel('Temperature (deg C)')
+plt.ylabel('Density (kg/m^3)');
+plt.title('Density vs Temperature')
+plt.show()
+```
 
 ## Objectives
 
