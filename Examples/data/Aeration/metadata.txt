@@ -1,26 +1,25 @@
-file name
-100.xls
-125.xls
-175.xls
-200.xls
-225.xls
-250.xls
-350.xls
-400.xls
-450.xls
-475.xls
-500.xls
-525.xls
-550.xls
-575.xls
-650.xls
-700.xls
-725.xls
-750.xls
-775.xls
-800.xls
-825.xls
-850.xls
-925.xls
-950.xls
-
+file name	flow (micromol/s)
+100.xls	100
+125.xls	125
+175.xls	175
+200.xls	200
+225.xls	225
+250.xls	250
+350.xls	350
+400.xls	400
+450.xls	450
+475.xls	475
+500.xls	500
+525.xls	525
+550.xls	550
+575.xls	575
+650.xls	650
+700.xls	700
+725.xls	725
+750.xls	750
+775.xls	775
+800.xls	800
+825.xls	825
+850.xls	850
+925.xls	925
+950.xls	950
