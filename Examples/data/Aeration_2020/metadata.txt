@@ -1,16 +1,12 @@
 file name	flow (micromol/s)
 100.tsv	100
 150.tsv	150
-175.tsv	175
-250.tsv	250
 275.tsv	275
 450.tsv	450
-475.tsv	475
 550.tsv	550
-575.tsv	575
 700.tsv	700
 750.tsv	750
-775.tsv	775
-800.tsv	800
+800a.tsv	800
+800b.tsv	800
 850.tsv	850
 875.tsv	875
